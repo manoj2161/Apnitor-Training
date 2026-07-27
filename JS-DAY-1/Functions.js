@@ -39,18 +39,31 @@
 // let users = ['alice','bob','rocky'];
 // greetGroup("hello",...users);
 
-// Safe Object Merging
-function updateProfile(currentProfile,newProfile){
-    const Profile = {...currentProfile,...newProfile};
-    return Profile;
-}
+// // Safe Object Merging
+// function updateProfile(currentProfile,newProfile){
+//     const Profile = {...currentProfile,...newProfile};
+//     return Profile;
+// }
 
-const currentProfile = {
-    name:"Manoj Kumar",
-    age:23,
-    dob:"03/06/2003"
-};
-const newProfile = {
-    age:24
-};
-console.log(updateProfile(currentProfile,newProfile));
+// const currentProfile = {
+//     name:"Manoj Kumar",
+//     age:23,
+//     dob:"03/06/2003"
+// };
+// const newProfile = {
+//     age:24
+// };
+// console.log(updateProfile(currentProfile,newProfile));
+
+
+
+// // The Calculator One-Liner
+
+// const mathPower = (num,exNum = 2)=>num**exNum;
+// console.log(mathPower(2))
+
+// // Array modifier
+// const shoppingList = ["Milk","Eggs","Bread"];
+// shoppingList.push("Apples");
+// shoppingList[0]="Almond Milk";
+// console.log(shoppingList);
