@@ -1,12 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <div id="employee-list"></div>
+  </head>
+  <body>
+    <header class="header"><h1>
+      Employee Management System
+    </h1>
+    </header>
+    <main>
+      <section class="inputData">
+        <div class="formBox">
+          <form action="" id="myForm">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" required><br>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required><br>
+            <label for="department">Department</label>
+            <input type="radio" name="department" value="it" id="it" required>
+            <label for="it">IT</label>
+            <input type="radio" name="department" value="hr" id="hr" required>
+            <label for="hr">HR</label>
+            <input type="radio" name="department" value="finance" id="finance" required>
+            <label for="finance">FINANCE</label><br>
+            <label for="salary">Salary</label>
+            <input type="number" name="salary" id="salary" required><br>
+            <label for="experience">Experience</label>
+            <input type="number" name="experience" id="experience" required><br>
+            <button type="submit" id="submit">Submit</button>
+          </form>
+        </div>
+      </section>
+      <section class="showData">
+        <div id="employeeList">
+          <h1>Employees List</h1>
+        </div>
+      </section>
+    </main>
+    
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
