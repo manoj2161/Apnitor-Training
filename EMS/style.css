@@ -410,6 +410,15 @@ tbody tr:hover {
   z-index: 100;
 }
 
+/* IMPORTANT: without this rule, the "display: flex" above would
+   override the browser's default styling for the [hidden] attribute,
+   causing every modal to stay visible (and block all clicks) even
+   when JavaScript sets hidden = true. This rule guarantees that any
+   element with the `hidden` attribute is actually hidden. */
+.modal-overlay[hidden] {
+  display: none;
+}
+
 .modal {
   background-color: #fff;
   border-radius: var(--radius);
