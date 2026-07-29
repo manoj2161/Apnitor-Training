@@ -28,7 +28,6 @@ let employees = [
   },
 ];
 
-
 function createEmployee(
   name,
   email,
@@ -60,7 +59,8 @@ function createEmployee(
 function renderEmployees(employees) {
   const employeeHTML = employees
     .map((employee) => {
-      return `<div class="employee">
+      return `
+      <div class="employee" data-id=${employee.id}>
             <p>ID : ${employee.id}</p>
             <p>NAME : ${employee.name}</p>
             <p>EMAIL : ${employee.email}</p>
@@ -69,7 +69,7 @@ function renderEmployees(employees) {
             <p>EXPERIENCE : ${employee.experience}</p>
             <p>STATUS : ${employee.status}</p>
             <br>
-            <button>Delete</button><button>Edit</button>
+            <button class="delete">Delete</button><button>Edit</button>
             </div>
             `;
     })
@@ -117,4 +117,12 @@ myForm.addEventListener("submit", (event) => {
   showEmployee.innerHTML = renderEmployees(employees);
 });
 
-function editEmployee(employee) {}
+showEmployee.addEventListener("click", (event) => {
+  const card = event.target.closest(".employee");
+  if(card){
+    if(event.target.matches(".delete")){
+    employees = employees.filter(employee=>employee.id!=card.dataset.id);
+    return showEmployee.innerHTML = renderEmployees(employees);
+   }
+  }
+});
