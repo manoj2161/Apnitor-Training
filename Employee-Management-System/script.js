@@ -1,5 +1,5 @@
 
-const employees = [
+let employees = [
     {
         id:1,
         name:"Manoj",
@@ -57,9 +57,7 @@ function createEmployee(
         };
         return newEmployee;
     }
-    const newEmployee = createEmployee("Karan","karan@gmail.com","IT",20000,0,employees);
-    const updatedEmployees = [...employees,newEmployee]
-    
+
     
     function renderEmployees(employees){
         const employeeHTML = employees.map(employee=>{
@@ -70,7 +68,7 @@ function createEmployee(
             <p>DEPARTMENT : ${employee.department}</p>
             <p>SALARY : ${employee.salary}</p>
             <p>EXPERIENCE : ${employee.experience}</p>
-            <p>STATuS : ${employee.status}</p>
+            <p>STATUS : ${employee.status}</p>
             <br>
             <button>Delete</button><button>Edit</button>
             </div>
@@ -79,21 +77,34 @@ function createEmployee(
         return employeeHTML;
     };
     
-const myForm = document.querySelector("#myForm");
-const showEmployee = document.querySelector("#employeeList");
-
-myForm.addEventListener("submit",(event)=>{
-    event.preventDefault();
-    const name = document.querySelector("#name").value;
-    const email = document.querySelector("#email").value;
-    const salary = document.querySelector("#salary").value;
-    const department = document.querySelector('input[name="department"]:checked').value;
-    const experience = document.querySelector("#experience").value;
-    console.log(name);
-    console.log(email);
-    console.log(salary);
-    console.log(experience);
-    console.log(department);
-});    
+    const myForm = document.querySelector("#myForm");
+    const showEmployee = document.querySelector("#employeeList");
     
-showEmployee.innerHTML=renderEmployees(updatedEmployees);
+    myForm.addEventListener("submit",(event)=>{
+        showEmployee.innerHTML=renderEmployees(employees);
+        event.preventDefault();
+        const name = document.querySelector("#name").value;
+        const email = document.querySelector("#email").value;
+        const salary = document.querySelector("#salary").value;
+        const department = document.querySelector('input[name="department"]:checked').value;
+        const experience = document.querySelector("#experience").value;
+        if(!name){
+            return console.log("Name should not be empty");
+        }
+        if(!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)){
+            return console.log("Email is not valid");
+        }
+        if(!salary){
+            return console.log("Salary should not be empty");
+        }
+        if(!department && department==null){
+            return console.log("Department should not be empty");
+        }
+        if(!experience){
+            return console.log("Experience should not be empty");
+        }
+        const newEmployee = createEmployee(name,email,department,salary,experience,employees);
+        employees = [...employees,newEmployee];
+        showEmployee.innerHTML=renderEmployees(employees);
+        
+    });       
