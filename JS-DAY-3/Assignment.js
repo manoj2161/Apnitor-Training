@@ -61,7 +61,6 @@ console.log(productName.replaceAll(" ","-"));
 console.log(status.includes("available"));
 console.log(imageName.toLowerCase().endsWith(".png"));
 console.log(imageName.slice(0,-4));
-console.log();
 const stockStatus = status.includes("available")?"In Stock":"Out of Stock";
 const finalResult = [`Product ${productId.slice(-4)} - ${productName.replaceAll(" ","-")} - ${catagory.replace("electronics","Electronics")} - ${price} - ${stockStatus}`]
 console.log(finalResult);
