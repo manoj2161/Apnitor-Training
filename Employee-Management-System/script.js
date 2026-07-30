@@ -27,7 +27,7 @@ let employees = [
     status: "Inactive",
   },
 ];
-
+let editingId = null;
 function createEmployee(
   name,
   email,
@@ -69,7 +69,7 @@ function renderEmployees(employees) {
             <p>EXPERIENCE : ${employee.experience}</p>
             <p>STATUS : ${employee.status}</p>
             <br>
-            <button class="delete">Delete</button><button>Edit</button>
+            <button class="delete">Delete</button><button class="edit">Edit</button>
             </div>
             `;
     })
@@ -90,6 +90,9 @@ myForm.addEventListener("submit", (event) => {
     'input[name="department"]:checked',
   ).value;
   const experience = document.querySelector("#experience").value;
+  if(editingId==employees.id){
+    return console.log("Id already exists");
+  }
   if (!name) {
     return console.log("Name should not be empty");
   }
@@ -119,10 +122,27 @@ myForm.addEventListener("submit", (event) => {
 
 showEmployee.addEventListener("click", (event) => {
   const card = event.target.closest(".employee");
-  if(card){
-    if(event.target.matches(".delete")){
-    employees = employees.filter(employee=>employee.id!=card.dataset.id);
-    return showEmployee.innerHTML = renderEmployees(employees);
-   }
+  if (card) {
+    if (event.target.matches(".delete")) {
+      employees = employees.filter(
+        (employee) => employee.id !== Number(card.dataset.id),
+      );
+      return (showEmployee.innerHTML = renderEmployees(employees));
+    } else if (event.target.matches(".edit")) {
+      const employeeToEdit = employees.find(
+        (employee) => employee.id === Number(card.dataset.id),
+      );
+      editingId = employeeToEdit;
+      if (editingId.id) {
+        document.querySelector("#name").value = editingId.name;
+        document.querySelector("#email").value = editingId.email;
+        document.querySelector("#salary").value = editingId.salary;
+        document.querySelector("#experience").value = editingId.experience;
+       const deptRadio = document.querySelector(
+         `input[name="department"][value="${editingId.department.toLowerCase()}"]`,
+       );
+       deptRadio.checked = true;
+      }
+    }
   }
 });
