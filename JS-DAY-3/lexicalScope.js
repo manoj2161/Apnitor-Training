@@ -25,15 +25,15 @@
 // Write a function createCounter() that returns a function. Every time 
 // you call it, it should return the next number starting
 //  from 1 (1, 2, 3, ...).
-function createCounter(){
-    let count = 0;
-    function number(){
-        count=count+1;
-        return count
-    }
-    return number
-}
-const counter = createCounter();
-console.log(counter());
-console.log(counter());
-console.log(counter());
+// function createCounter(){
+//     let count = 0;
+//     function number(){
+//         count=count+1;
+//         return count
+//     }
+//     return number
+// }
+// const counter = createCounter();
+// console.log(counter());
+// console.log(counter());
+// console.log(counter());
