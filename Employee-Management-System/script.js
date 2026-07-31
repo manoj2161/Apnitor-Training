@@ -291,4 +291,6 @@ function updateDisplay() {
   let result = appllySearch(employees);
   result = applyFilters(result);
   return (showEmployee.innerHTML = renderEmployees(result));
+  console.log("branch changed");
+  
 }
