@@ -60,7 +60,7 @@ function createEmployee(
     experience,
     status: "Active",
   };
-  // return newEmployee object 
+  // return newEmployee object
   return newEmployee;
 }
 
@@ -84,7 +84,7 @@ function renderEmployees(employees) {
             `;
     })
     .join("");
-    // return employeeHtml structure whenever needed
+  // return employeeHtml structure whenever needed
   return employeeHTML;
 }
 
@@ -97,14 +97,16 @@ showEmployee.innerHTML = renderEmployees(employees);
 
 // Step 7 Taking input data from form when sumbitted
 myForm.addEventListener("submit", (event) => {
-  // this helps to prevent page from refreshing 
+  // this helps to prevent page from refreshing
   event.preventDefault();
 
   // Taking the input data of all the input fields
   const name = document.querySelector("#name").value;
   const email = document.querySelector("#email").value;
   const salary = document.querySelector("#salary").value;
-  const department = document.querySelector('input[name="department"]:checked',).value;
+  const department = document.querySelector(
+    'input[name="department"]:checked',
+  ).value;
   const experience = document.querySelector("#experience").value;
 
   // Implementing Validations
@@ -136,11 +138,10 @@ myForm.addEventListener("submit", (event) => {
     );
     employees = [...employees, newEmployee];
   }
-  
+
   // If the id exists Update the existing employee
   else {
     employees = employees.map((employee) => {
-
       // if the edit id mathes employee id then update the employee
       if (employee.id === editingId.id) {
         return {
@@ -152,7 +153,7 @@ myForm.addEventListener("submit", (event) => {
           experience: experience,
         };
       }
-      
+
       //  if the id dones not matches return default employees
       else {
         return employee;
@@ -166,16 +167,14 @@ myForm.addEventListener("submit", (event) => {
   // Render the employees after updatation
   showEmployee.innerHTML = renderEmployees(employees);
 });
+
 // Step 8 getting the id of the element which is selected by using clck event on the showEmployee div
 showEmployee.addEventListener("click", (event) => {
-
   // store the employee data in card variable
   const card = event.target.closest(".employee");
   if (card) {
-
     // if the card is clicked then work only if the delete button is clicked
     if (event.target.matches(".delete")) {
-
       // if delete button clicked remove that employee
       employees = employees.filter(
         (employee) => employee.id !== Number(card.dataset.id),
@@ -183,12 +182,11 @@ showEmployee.addEventListener("click", (event) => {
 
       // Render the employee after deleting the data
       return (showEmployee.innerHTML = renderEmployees(employees));
-    } 
-    
+    }
+
     // if the edit button is clicked then this code works
     else if (event.target.matches(".edit")) {
-
-      // when the edit button clicked find the id of the clicked object 
+      // when the edit button clicked find the id of the clicked object
       const employeeToEdit = employees.find(
         (employee) => employee.id === Number(card.dataset.id),
       );
@@ -196,17 +194,101 @@ showEmployee.addEventListener("click", (event) => {
       // store the object into editingid
       editingId = employeeToEdit;
 
-      // if the editing id is ture then take the data of the object and put it into the input fileds of the form 
+      // if the editing id is ture then take the data of the object and put it into the input fileds of the form
       if (editingId.id) {
         document.querySelector("#name").value = editingId.name;
         document.querySelector("#email").value = editingId.email;
         document.querySelector("#salary").value = editingId.salary;
         document.querySelector("#experience").value = editingId.experience;
         const deptRadio = document.querySelector(
-          `input[name="department"][value="${editingId.department.toLowerCase()}"]`,
+          `input[name="department"][value="${editingId.department}"]`,
         );
         deptRadio.checked = true;
       }
     }
   }
 });
+
+// Step 9 Initilizing search value to empty so it can be access later in the functions
+let searchValue = "";
+
+//Searching the employee with input event listener
+const searchInput = document.querySelector("#search");
+
+// input event helps to filter result on each key pressed
+searchInput.addEventListener("input", (event) => {
+  // Storing the searched result in the searchvalue variable
+  searchValue = event.target.value.toLowerCase().trim();
+  // by using filter methods filter the emoloyees that are searched
+  return updateDisplay();
+});
+
+// Storing the search result in applysearch function
+function appllySearch(employees) {
+  let filterdEmployee = employees.filter((employee) => {
+    // if the search value mathes the object values then gives true which retur the updated filtered employees
+    if (
+      employee.name.toLowerCase().includes(searchValue) ||
+      employee.department.toLowerCase().includes(searchValue)
+    ) {
+      return true;
+    }
+    // if the serach value dones not mathces the result then it dones not provide any data and show no employee data
+    else {
+      return false;
+    }
+  });
+  return filterdEmployee;
+}
+
+// Storing the result of active of inactive memebers in applyFilter function Initilize the status to all
+let statusFilter = "all";
+let departmentFilterValue = "all";
+const status = document.querySelector("#status");
+status.addEventListener("change", (event) => {
+  statusFilter = event.target.value;
+  updateDisplay();
+});
+
+const departments = document.querySelector("#searchdepartment");
+departments.addEventListener("change", (event) => {
+  departmentFilterValue = event.target.value;
+  updateDisplay();
+});
+
+let minSalary = "";
+let maxSalary = "";
+const minSalaryFilter = document.querySelector("#minSalary");
+const maxSalaryFilter = document.querySelector("#maxSalary");
+
+minSalaryFilter.addEventListener("input", (event) => {
+  minSalary = event.target.value;
+  updateDisplay();
+});
+
+maxSalaryFilter.addEventListener("input", (event) => {
+  maxSalary = event.target.value;
+  updateDisplay();
+});
+
+function applyFilters(employees) {
+  let filterdEmployee = employees.filter((employee) => {
+    const statusMatch =
+      statusFilter === "all" || employee.status.toLowerCase() === statusFilter;
+    const departmentMatches =
+      departmentFilterValue === "all" ||
+      employee.department.toLowerCase() === departmentFilterValue;
+    const minSalaryInput = Number(minSalary) || 0;
+    const maxSalaryInput = Number(maxSalary) || Infinity;
+    const salryMatch =
+      employee.salary >= minSalaryInput && employee.salary<=maxSalaryInput;
+    return statusMatch && departmentMatches && salryMatch;
+  });
+  return filterdEmployee;
+}
+// redner the list of employees after searching and using filter
+function updateDisplay() {
+  let result = appllySearch(employees);
+  result = applyFilters(result);
+  return (showEmployee.innerHTML = renderEmployees(result));
+}

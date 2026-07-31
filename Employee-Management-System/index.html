@@ -6,37 +6,67 @@
     <title>Document</title>
   </head>
   <body>
-    <header class="header"><h1>
-      Employee Management System
-    </h1>
-    </header>
+    <header class="header"><h1>Employee Management System</h1></header>
     <main>
       <section class="inputData">
         <div class="formBox">
           <form action="" id="myForm">
             <label for="name">Name</label>
-            <input type="text" name="name" id="name" required><br>
+            <input type="text" name="name" id="name" required /><br />
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" required><br>
+            <input type="email" name="email" id="email" required /><br />
             <label for="department">Department</label>
-            <input type="radio" name="department" value="IT" id="it" required>
+            <input type="radio" name="department" value="IT" id="it" required />
             <label for="it">IT</label>
-            <input type="radio" name="department" value="HR" id="hr" required>
+            <input type="radio" name="department" value="HR" id="hr" required />
             <label for="hr">HR</label>
-            <input type="radio" name="department" value="FINANCE" id="finance" required>
-            <label for="finance">FINANCE</label><br>
+            <input
+              type="radio"
+              name="department"
+              value="FINANCE"
+              id="finance"
+              required
+            />
+            <label for="finance">FINANCE</label><br />
             <label for="salary">Salary</label>
-            <input type="number" name="salary" id="salary" required><br>
+            <input type="number" name="salary" id="salary" required /><br />
             <label for="experience">Experience</label>
-            <input type="number" name="experience" id="experience" required><br>
+            <input
+              type="number"
+              name="experience"
+              id="experience"
+              required
+            /><br />
             <button type="submit" id="submit">Submit</button>
           </form>
         </div>
       </section>
       <section class="showData">
-         <h1>Employees List</h1>
-        <div id="employeeList">
-        </div>
+        <h1>Employees List</h1>
+        <span
+          ><input
+            type="search"
+            name="search"
+            id="search"
+            placeholder="Search by name of department" /></span
+        ><span
+          ><select name="status" id="status">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select></span
+        ><span
+          ><select name="departments" id="searchdepartment">
+            <option value="all">ALL</option>
+            <option value="it">IT</option>
+            <option value="hr">HR</option>
+            <option value="finance">FINANCE</option>
+          </select></span> <span> Min Salary
+            <input type="number" name="minSalary" id="minSalary" placeholder="Enter min salary"></span><span> Max Salary
+            <input type="number" name="maxSalary" id="maxSalary" placeholder="Enter max slary">
+          </span>
+        
+        <div id="employeeList"></div>
       </section>
     </main>
     <script src="script.js"></script>
