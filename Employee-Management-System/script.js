@@ -27,6 +27,15 @@ let employees = [
     experience: 1,
     status: "Inactive",
   },
+  {
+    id: 4,
+    name: "Aman kumar",
+    email: "aman@gmail.com",
+    department: "FINANCE",
+    salary: 350000,
+    experience: 3,
+    status: "Active",
+  },
 ];
 
 // Step 2 Initilize the initial id to null
@@ -281,16 +290,26 @@ function applyFilters(employees) {
     const minSalaryInput = Number(minSalary) || 0;
     const maxSalaryInput = Number(maxSalary) || Infinity;
     const salryMatch =
-      employee.salary >= minSalaryInput && employee.salary<=maxSalaryInput;
+      employee.salary >= minSalaryInput && employee.salary <= maxSalaryInput;
     return statusMatch && departmentMatches && salryMatch;
   });
   return filterdEmployee;
 }
+function applySort(employees) {
+  const defaultsort = [...employees];
+  const sorted = [...employees];
+  sorted.sort((a, b) => a.name.localeCompare(b.name));
+  const descSorted = [...employees];
+  descSorted.sort((a, b) => b.name.localeCompare(a.name));
+  console.log(sorted);
+  console.log(descSorted);
+  console.log(defaultsort);
+}
+applySort(employees);
 // redner the list of employees after searching and using filter
 function updateDisplay() {
   let result = appllySearch(employees);
   result = applyFilters(result);
+  result = applySort(result);
   return (showEmployee.innerHTML = renderEmployees(result));
-  console.log("branch changed");
-  
 }
