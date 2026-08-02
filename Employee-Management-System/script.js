@@ -88,7 +88,7 @@ function renderEmployees(employees) {
             <p>EXPERIENCE : ${employee.experience}</p>
             <p>STATUS : ${employee.status}</p>
             <br>
-            <button class="delete">Delete</button><button class="edit">Edit</button>
+            <button class="delete">Delete</button>                <button class="edit">Edit</button>
             </div>
             `;
     })
@@ -97,6 +97,30 @@ function renderEmployees(employees) {
   return employeeHTML;
 }
 
+const statistics = document.querySelector("#statistics");
+function renderStats(employees) {
+  let lowestSalary = [...employees];
+  const activeEmployees = employees.filter((employee) => employee.status === "Active");
+  const inactiveEmployees = employees.filter((employee) => employee.status === "Inactive");
+  const averageSalary = employees.reduce((acc, curr) => { return acc + curr.salary }, 0);
+  const highestSalary = employees.sort((a, b) => {
+    return b.salary - a.salary;
+  }, 0);
+  const lowSalary = lowestSalary.sort((a, b) => {
+    return a.salary - b.salary;
+  }, 0);
+  const totalEmployees = `
+<div>
+<span>Total employees : ${employees.length}</span>
+<span>Active employees : ${activeEmployees.length}</span>
+<span>Inactive employees: ${inactiveEmployees.length}</span>
+<span>Average Salary : ${averageSalary / employees.length}</span>
+<span>Highest Salary : ${highestSalary[0].salary}</span>
+<span>Lowest Salary : ${lowestSalary[0].salary}</span>
+</div>`
+  return totalEmployees;
+}
+statistics.innerHTML = renderStats(employees);
 // Step 5 Accessing form and employee data div
 const myForm = document.querySelector("#myForm");
 const showEmployee = document.querySelector("#employeeList");
@@ -110,7 +134,7 @@ myForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   // Taking the input data of all the input fields
-  const name = document.querySelector("#name").value;
+  const name = document.querySelector("#name").value.trim();
   const email = document.querySelector("#email").value;
   const salary = document.querySelector("#salary").value;
   const department = document.querySelector(
@@ -145,7 +169,7 @@ myForm.addEventListener("submit", (event) => {
       experience,
       employees,
     );
-    employees = [...employees, newEmployee];
+    return newEmployee;
   }
 
   // If the id exists Update the existing employee
@@ -172,9 +196,10 @@ myForm.addEventListener("submit", (event) => {
 
   // Reassign the editingid to null
   editingId = null;
-
+  myForm.reset();
   // Render the employees after updatation
   showEmployee.innerHTML = renderEmployees(employees);
+  statistics.innerHTML = renderStats(employees);
 });
 
 // Step 8 getting the id of the element which is selected by using clck event on the showEmployee div
@@ -295,21 +320,47 @@ function applyFilters(employees) {
   });
   return filterdEmployee;
 }
+
+let sortBtn = "all";
+let sortinByName = document.querySelector("#sortBtn");
+sortinByName.addEventListener("change", (event) => {
+  sortBtn = event.target.value;
+  sortUpdate();
+})
 function applySort(employees) {
   const defaultsort = [...employees];
-  const sorted = [...employees];
-  sorted.sort((a, b) => a.name.localeCompare(b.name));
-  const descSorted = [...employees];
-  descSorted.sort((a, b) => b.name.localeCompare(a.name));
-  console.log(sorted);
-  console.log(descSorted);
-  console.log(defaultsort);
+  let sorted = [...employees];
+  if (sortBtn === "nameA-Z") {
+    return sorted.sort((a, b) => a.name.localeCompare(b.name));
+  }
+  else if (sortBtn === "nameZ-A") {
+    return sorted.sort((a, b) => b.name.localeCompare(a.name));
+  }
+  else if (sortBtn === "salaryMin") {
+    return sorted.sort((a, b) => a.salary - b.salary);
+  }
+  else if (sortBtn === "salaryMax") {
+    return sorted.sort((a, b) => b.salary - a.salary);
+  }
+  else if (sortBtn === "experienceMin") {
+    return sorted.sort((a, b) => a.experience - b.experience);
+  }
+  else if (sortBtn === "experienceMax") {
+    return sorted.sort((a, b) => b.experience - a.experience);
+  }
+  else {
+    return defaultsort;
+  }
 }
-applySort(employees);
+
+function sortUpdate() {
+  let result = applySort(employees);
+  return showEmployee.innerHTML = renderEmployees(result);
+}
 // redner the list of employees after searching and using filter
 function updateDisplay() {
   let result = appllySearch(employees);
   result = applyFilters(result);
-  result = applySort(result);
-  return (showEmployee.innerHTML = renderEmployees(result));
+  return showEmployee.innerHTML = renderEmployees(result);
 }
+
