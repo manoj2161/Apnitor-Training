@@ -361,7 +361,6 @@ function sortUpdate() {
 function updateDisplay() {
   let result = appllySearch(employees);
   result = applyFilters(result);
-  result = applySort(result);
-  return (showEmployee.innerHTML = renderEmployees(result));
+  return showEmployee.innerHTML = renderEmployees(result);
 }
 
