@@ -310,6 +310,6 @@ applySort(employees);
 function updateDisplay() {
   let result = appllySearch(employees);
   result = applyFilters(result);
-  result = applySort(result);
+  // result = applySort(result);
   return (showEmployee.innerHTML = renderEmployees(result));
 }
