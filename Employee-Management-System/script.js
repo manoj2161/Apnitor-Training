@@ -99,25 +99,30 @@ function renderEmployees(employees) {
 
 const statistics = document.querySelector("#statistics");
 function renderStats(employees) {
-  let lowestSalary = [...employees];
-  const activeEmployees = employees.filter((employee) => employee.status === "Active");
-  const inactiveEmployees = employees.filter((employee) => employee.status === "Inactive");
-  const averageSalary = employees.reduce((acc, curr) => { return acc + curr.salary }, 0);
-  const highestSalary = employees.sort((a, b) => {
-    return b.salary - a.salary;
-  }, 0);
-  const lowSalary = lowestSalary.sort((a, b) => {
-    return a.salary - b.salary;
-  }, 0);
+  const activeEmployees = employees.filter(
+    (employee) => employee.status === "Active",
+  );
+  const inactiveEmployees = employees.filter(
+    (employee) => employee.status === "Inactive",
+  );
+  const totalSalary = employees.reduce(
+    (acc, curr) => acc + Number(curr.salary),
+    0,
+  );
+  const averageSalary = employees.length ? totalSalary / employees.length : 0;
+  const sortedBySalaryDesc = [...employees].sort((a, b) => b.salary - a.salary);
+  const sortedBySalaryAsc = [...employees].sort((a, b) => a.salary - b.salary);
+  const highestSalary = employees.length ? sortedBySalaryDesc[0].salary : 0;
+  const lowestSalary = employees.length ? sortedBySalaryAsc[0].salary : 0;
   const totalEmployees = `
-<div>
-<span>Total employees : ${employees.length}</span>
-<span>Active employees : ${activeEmployees.length}</span>
-<span>Inactive employees: ${inactiveEmployees.length}</span>
-<span>Average Salary : ${averageSalary / employees.length}</span>
-<span>Highest Salary : ${highestSalary[0].salary}</span>
-<span>Lowest Salary : ${lowestSalary[0].salary}</span>
-</div>`
+<div style="display:grid;gap:10px;">
+<span>Total employees : ${employees.length}</span>   
+<span>Active employees : ${activeEmployees.length}</span>   
+<span>Inactive employees: ${inactiveEmployees.length}</span>   
+<span>Average Salary : ${averageSalary.toFixed(2)}</span>   
+<span>Highest Salary : ${highestSalary}</span>   
+<span>Lowest Salary : ${lowestSalary}</span>   
+</div>`;
   return totalEmployees;
 }
 statistics.innerHTML = renderStats(employees);
@@ -136,11 +141,11 @@ myForm.addEventListener("submit", (event) => {
   // Taking the input data of all the input fields
   const name = document.querySelector("#name").value.trim();
   const email = document.querySelector("#email").value;
-  const salary = document.querySelector("#salary").value;
+  const salary = Number(document.querySelector("#salary").value);
   const department = document.querySelector(
     'input[name="department"]:checked',
   ).value;
-  const experience = document.querySelector("#experience").value;
+  const experience = Number(document.querySelector("#experience").value);
 
   // Implementing Validations
   if (!name || name === " ") {
@@ -169,7 +174,11 @@ myForm.addEventListener("submit", (event) => {
       experience,
       employees,
     );
-    return newEmployee;
+    employees.push(newEmployee);
+    myForm.reset();
+    showEmployee.innerHTML = renderEmployees(employees);
+    statistics.innerHTML = renderStats(employees);
+    return;
   }
 
   // If the id exists Update the existing employee
@@ -215,7 +224,9 @@ showEmployee.addEventListener("click", (event) => {
       );
 
       // Render the employee after deleting the data
-      return (showEmployee.innerHTML = renderEmployees(employees));
+      showEmployee.innerHTML = renderEmployees(employees);
+      statistics.innerHTML = renderStats(employees);
+      return;
     }
 
     // if the edit button is clicked then this code works
@@ -326,41 +337,34 @@ let sortinByName = document.querySelector("#sortBtn");
 sortinByName.addEventListener("change", (event) => {
   sortBtn = event.target.value;
   sortUpdate();
-})
+});
 function applySort(employees) {
   const defaultsort = [...employees];
   let sorted = [...employees];
   if (sortBtn === "nameA-Z") {
     return sorted.sort((a, b) => a.name.localeCompare(b.name));
-  }
-  else if (sortBtn === "nameZ-A") {
+  } else if (sortBtn === "nameZ-A") {
     return sorted.sort((a, b) => b.name.localeCompare(a.name));
-  }
-  else if (sortBtn === "salaryMin") {
+  } else if (sortBtn === "salaryMin") {
     return sorted.sort((a, b) => a.salary - b.salary);
-  }
-  else if (sortBtn === "salaryMax") {
+  } else if (sortBtn === "salaryMax") {
     return sorted.sort((a, b) => b.salary - a.salary);
-  }
-  else if (sortBtn === "experienceMin") {
+  } else if (sortBtn === "experienceMin") {
     return sorted.sort((a, b) => a.experience - b.experience);
-  }
-  else if (sortBtn === "experienceMax") {
+  } else if (sortBtn === "experienceMax") {
     return sorted.sort((a, b) => b.experience - a.experience);
-  }
-  else {
+  } else {
     return defaultsort;
   }
 }
 
 function sortUpdate() {
   let result = applySort(employees);
-  return showEmployee.innerHTML = renderEmployees(result);
+  return (showEmployee.innerHTML = renderEmployees(result));
 }
 // redner the list of employees after searching and using filter
 function updateDisplay() {
   let result = appllySearch(employees);
   result = applyFilters(result);
-  return showEmployee.innerHTML = renderEmployees(result);
+  return (showEmployee.innerHTML = renderEmployees(result));
 }
-

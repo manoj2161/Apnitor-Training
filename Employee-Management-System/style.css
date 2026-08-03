@@ -1,6 +1,6 @@
 :root {
-    --primary-color: #2563eb;
-    --primary-dark: #1d4ed8;
+    --primary-color: #162b58;
+    --primary-dark: #5073d2;
     --accent: #10b981;
     --bg: #f4f7fb;
     --surface: #ffffff;
@@ -173,6 +173,28 @@ button:hover {
     main {
         grid-template-columns: 1fr;
     }
+
+    #statistics {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .showData {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .showData > span {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .showData > span label,
+    .showData > span input,
+    .showData > span select {
+        width: 100%;
+    }
 }
 
 @media (max-width: 600px) {
@@ -193,12 +215,38 @@ button:hover {
         padding: 1rem;
     }
 
-    .showData>span {
-        width: 100%;
+    .formBox {
+        padding: 1rem;
+    }
+
+    .inputData form {
+        gap: 0.85rem;
+    }
+
+    .showData {
+        gap: 0.75rem;
+    }
+
+    .showData > span {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0;
     }
 
     .showData input,
-    .showData select {
+    .showData select,
+    #search {
         min-width: 100%;
+    }
+
+    button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #employeeList > div,
+    #employeeList > p {
+        padding: 0.9rem;
     }
 }
