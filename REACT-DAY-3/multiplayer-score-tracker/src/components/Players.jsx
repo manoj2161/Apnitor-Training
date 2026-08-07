@@ -49,17 +49,17 @@ const highestScore = Math.max(...players.map((player)=>player.score))
 }
   return (
     <>
-      <div>
-        <h2>Derived Leader</h2>
+      <div className="derivedBoard">
+        <h2 className="leaderHeading">Derived Leader</h2>
         {players
           .filter((player) => player.score === highestScore)
           .map((player) => {
-            return <p key={player.id}>Name : {player.name} Score : {player.score}</p>;
+            return <p key={player.id} className="playerName">Name : {player.name} | Score : {player.score}</p>;
           })}
       </div>
       <div className="scoreBoard">
         <table className="scoreTable">
-          <thead>
+          <thead className="tableHead">
             <tr>
               <th>ID</th>
               <th>NAME</th>
@@ -71,18 +71,24 @@ const highestScore = Math.max(...players.map((player)=>player.score))
           {players.map((player) => {
             return (
               <tbody key={player.id}>
-                <tr>
+                <tr className="tableData">
                   <td>{player.id}</td>
                   <td>{player.name}</td>
                   <td>{player.score}</td>
                   {console.log("Player's score", player.name, player.score)}
                   <td>
-                    <button onClick={() => handleScoreInc(player.id)}>
+                    <button
+                      className="incBtn"
+                      onClick={() => handleScoreInc(player.id)}
+                    >
                       +1
                     </button>
                   </td>
                   <td>
-                    <button onClick={() => handleScoreDec(player.id)}>
+                    <button
+                      className="decBtn"
+                      onClick={() => handleScoreDec(player.id)}
+                    >
                       -1
                     </button>
                   </td>
@@ -91,18 +97,18 @@ const highestScore = Math.max(...players.map((player)=>player.score))
             );
           })}
         </table>
-        <button onClick={handleReset}>Reset Score</button>
-        <p>
+        <button className="resetBtn" onClick={handleReset}>Reset Score</button>
+        <p className="score">
           Total Score :{" "}
           {players.reduce((acc, curr) => {
             return acc + curr.score;
           }, 0)}
         </p>
       </div>
-      <div>
+      <div className="inputForm">
         <h1>Add Player</h1>
-        <label htmlFor="name"></label>
-        <input
+        <label htmlFor="name">Name</label>
+        <input placeholder="    Enter new player name"
           type="text"
           name="name"
           id="name"
@@ -111,7 +117,7 @@ const highestScore = Math.max(...players.map((player)=>player.score))
             setName(e.target.value);
           }}
         />
-        <button type="submit" onClick={handleUser}>
+        <button className="submitBtn" type="submit" onClick={handleUser}>
           Add Player
         </button>
       </div>
