@@ -42,6 +42,8 @@ function Exercise6() {
         name: "",
         email: "",
         phone: "",
+        password:"",
+        cpassword:""
       }));
     }
   }
