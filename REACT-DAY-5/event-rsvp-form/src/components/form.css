@@ -1,0 +1,169 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.formOuterBox {
+  width: 100%;
+  height: 100vh;
+  background-color: #f3f3fe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.formBox {
+  width: 600px;
+  height: 70vh;
+  background-color: #ffffff;
+  border-radius: 30px;
+}
+
+.formHeading {
+      margin-top: 10px;
+  text-align: center;
+  padding: 5px;
+  color: #2c3345;
+}
+form {
+  width: 400px;
+  /* padding: 60px; */
+  margin-left: 100px;
+  margin-top: 30px;
+}
+form label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #182850;
+}
+form input,
+select {
+  width: 400px;
+  height: 40px;
+  border: 1px solid rgb(200, 173, 17);
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+.radioBtns {
+  width: 400px;
+  display: flex;
+  align-items: center;
+  width: 10px;
+  gap: 10px;
+}
+
+#newsLetterOptIn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 10px;
+}
+
+.textArea textarea {
+  width: 400px;
+  border: 1px solid rgb(200, 173, 17);
+  height: 60px;
+  border-radius: 5px;
+  padding: 5px;
+}
+.submitBtn {
+  width: 400px;
+  height: 40px;
+  border: none;
+  background-color: #1f70ea;
+  color: white;
+  font-size: 1rem;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.resetBtn {
+  width: 400px;
+  height: 40px;
+  border: none;
+  background-color: lightsteelblue;
+  color: black;
+  font-size: 1rem;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+form p {
+  color: red;
+  gap: 5px;
+}
+
+.showConfirmation {
+  position: relative;
+  right: 400px;
+  top: 300px;
+}
+
+.astrick {
+  color: red;
+}
+@media screen and (max-width: 720px) {
+  .formBox {
+    width: 350px;
+    height: 75vh;
+  }
+  form {
+    width: 170px;
+    margin-left: 80px;
+  }
+  .formHeading {
+
+font-size: 0.9rem;
+}
+  form label {
+    font-size: 8px;
+    font-weight: 600;
+    color: #182850;
+  }
+  form input,
+  select {
+    width: 200px;
+    height: 20px;
+    border: 1px solid rgb(200, 173, 17);
+    border-radius: 5px;
+    font-size: 0.5rem;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .textArea textarea {
+    width: 200px;
+    border: 1px solid rgb(200, 173, 17);
+    height: 60px;
+    border-radius: 5px;
+    font-size: 0.5rem;
+    padding: 5px;
+  }
+  .submitBtn {
+    width: 200px;
+    height: 20px;
+    border: none;
+    background-color: #1f70ea;
+    color: white;
+    font-size: 0.5rem;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+
+  .resetBtn {
+    width: 200px;
+    height: 20px;
+    border: none;
+    background-color: lightsteelblue;
+    color: black;
+    font-size: 0.5rem;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+  .astrick {
+  font-size: 0.4rem;
+}
+}
