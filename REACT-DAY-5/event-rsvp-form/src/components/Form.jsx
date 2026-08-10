@@ -11,18 +11,19 @@ function Form() {
     specialRequest: "",
   });
   const [errors, setErrors] = useState({});
-//   const [confirmationMessage, setconfirmationMessage] = useState("");
   function validate() {
     const newErrors = {};
     if (!form.fullname.trim()) {
       newErrors.fullname = "Fullname is required";
-    } else if (form.fullname.length > 20) {
+    } else if (form.fullname.length > 50) {
       newErrors.fullname = "Name should be less than 20 characters";
     }
     if (!form.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = "email is not in valid format";
+    } else if (form.email.length > 50) {
+      newErrors.fullname = "email should be less than 50 characters";
     }
     if (!form.mealPreference) {
       newErrors.mealPreference = "Please select one meal";
@@ -34,7 +35,7 @@ function Form() {
       e.preventDefault();
       if (validate()) {
       console.log(form);
-      toast.success(`✅ RSVP Confirmed for ${form.fullname}`);
+      toast.success(`RSVP Confirmed for ${form.fullname}`);
       setForm({
         fullname: "",
         email: "",
@@ -66,6 +67,7 @@ function Form() {
               type="text"
               name="fullname"
               id="fullname"
+              value={form.fullname}
               onChange={handleChange}
               placeholder="eg: Jhon Dee"
             />
@@ -76,6 +78,7 @@ function Form() {
               type="email"
               name="email"
               id="email"
+              value={form.email}
               onChange={handleChange}
               placeholder="eg: user@email.com"
             />{" "}
@@ -125,7 +128,8 @@ function Form() {
               <input
                 type="checkbox"
                 name="newsLetterOptIn"
-                // checked={form.newsLetterOptIn}
+                value={form.newsLetterOptIn}
+                checked={form.newsLetterOptIn}
                 onChange={handleChange}
               />
             </span>
@@ -144,15 +148,11 @@ function Form() {
             <button
               className="resetBtn"
               type="reset"
-            //   onClick={() => {
-            //     setconfirmationMessage("");
-            //   }}
             >
               Start Over
             </button>
           </form>
         </div>
-        {/* <div className="showConfirmation">{confirmationMessage}<ToastContainer/></div> */}
       </div>
     </>
   );
