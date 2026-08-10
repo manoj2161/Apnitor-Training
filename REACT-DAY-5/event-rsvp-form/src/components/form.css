@@ -15,7 +15,7 @@
 }
 .formBox {
   width: 600px;
-  height: 70vh;
+  height: 82vh;
   background-color: #ffffff;
   border-radius: 30px;
 }
@@ -54,7 +54,12 @@ select {
   width: 10px;
   gap: 10px;
 }
-
+.meal{
+  margin-top: 11px;
+}
+.newsletter{
+  margin-top: 10px;
+}
 #newsLetterOptIn {
   display: flex;
   align-items: center;
@@ -94,6 +99,7 @@ select {
 form p {
   color: red;
   gap: 5px;
+  margin-bottom: 8px;
 }
 
 .showConfirmation {
@@ -165,5 +171,8 @@ font-size: 0.9rem;
   }
   .astrick {
   font-size: 0.4rem;
+}
+form p{
+  font-size: 0.5rem;
 }
 }

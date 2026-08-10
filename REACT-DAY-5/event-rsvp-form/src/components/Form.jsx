@@ -16,14 +16,14 @@ function Form() {
     if (!form.fullname.trim()) {
       newErrors.fullname = "Fullname is required";
     } else if (form.fullname.length > 50) {
-      newErrors.fullname = "Name should be less than 20 characters";
+      newErrors.fullname = "Name should be less than 50 characters";
     }
     if (!form.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = "email is not in valid format";
     } else if (form.email.length > 50) {
-      newErrors.fullname = "email should be less than 50 characters";
+      newErrors.email = "email should be less than 50 characters";
     }
     if (!form.mealPreference) {
       newErrors.mealPreference = "Please select one meal";
@@ -98,6 +98,7 @@ function Form() {
                 type="radio"
                 name="mealPreference"
                 id="veg"
+                className="meal"
                 value="veg"
                 checked={form.mealPreference === "veg"}
                 onChange={handleChange}
@@ -107,6 +108,7 @@ function Form() {
                 type="radio"
                 name="mealPreference"
                 id="nonVeg"
+                className="meal"
                 value="nonVeg"
                 checked={form.mealPreference === "nonVeg"}
                 onChange={handleChange}
@@ -116,6 +118,7 @@ function Form() {
                 type="radio"
                 name="mealPreference"
                 id="vegan"
+                className="meal"
                 value="vegan"
                 checked={form.mealPreference === "vegan"}
                 onChange={handleChange}
@@ -128,6 +131,7 @@ function Form() {
               <input
                 type="checkbox"
                 name="newsLetterOptIn"
+                className="newsletter"
                 value={form.newsLetterOptIn}
                 checked={form.newsLetterOptIn}
                 onChange={handleChange}
@@ -145,10 +149,7 @@ function Form() {
             <button className="submitBtn" type="submit">
               Submit
             </button>
-            <button
-              className="resetBtn"
-              type="reset"
-            >
+            <button className="resetBtn" type="reset">
               Start Over
             </button>
           </form>
