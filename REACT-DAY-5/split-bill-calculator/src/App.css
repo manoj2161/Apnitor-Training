@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.mainBody {
+  width: 350px;
+  height: 68vh;
+  background-color: rgb(232, 232, 232);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.heading {
+  text-align: center;
+  padding: 10px;
+}
+.personBody {
+  width: 300px;
+  height: 500px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.peopleDiv {
+  width: 300px;
+  height: 50vh;
+  background-color: white;
+  /* border: 2px solid black; */
+  border-radius: 20px;
+}
+.person {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.person label {
+  padding-top: 15px;
+  padding-left: 20px;
+  font-weight: 600;
+}
+.person input {
+  height: 35px;
+  width: 200px;
+  border-radius: 20px;
+  outline: none;
+  border: 1px solid gray;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+.addBtn {
+  width: 60px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(9, 190, 190);
+  color: white;
+  margin-left: 14px;
+  margin-bottom: 5px;
+}
+.addedPeople {
+  margin-left: 15px;
+  margin-top: 5px;
+  height: 100px;
+}
+.addedPeople ul {
+  list-style: none;
+}
+.addedPeople ul li {
+  width: 200px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  background-color: lightgray;
+  height: 30px;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.removeBtn {
+  width: 30px;
+  border-radius: 5px;
+  background-color: rgb(255, 8, 8);
+  border: none;
+}
+
+.billing{
+    padding-top: 35px;
+    padding-left: 15px;
+    width: 200px;
+    height: 100px;
+
+}
+.billing label{
+    font-size: 0.9rem;
+}
+.billing input{
+    width: 220px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    margin-top: 5px;
+    padding: 10px;
+}
+.totalBillDiv {
+  width: 300px;
+  height: 20vh;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+align-items: center;
+}
+.tBill{
+    height: 50px;
+    width: 220px;
+    text-align: center;
+    background-color: rgb(208, 203, 203);
+    border-radius: 10px;
+    padding: 10px;
+    border-bottom: 3px solid rgb(83, 80, 80);
+    font-size: 1rem;
+}
+.covered{
+    margin-top: 10px;
+    width: 200px;
+    height: 30px;
+    background-color: rgb(199, 233, 199);
+    border-radius: 20px;
+    border: 1px solid green;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.share{
+    margin-top: 10px;
+}
