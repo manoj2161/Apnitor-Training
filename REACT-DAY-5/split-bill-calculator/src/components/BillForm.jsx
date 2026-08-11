@@ -1,18 +1,16 @@
-import "../App.css";
-function BillForm({ bill, setBill }) {
-  return (
-    <>
-    <div className="billing">
 
-      <label>Enter Bill Amount</label>
+function BillForm({bill,setBill}) {
+  return (
+    <><label htmlFor="bill">Enter Bill Ammount</label>
       <input
         type="number"
+        name="bill"
+        id="bill"
         value={bill}
         onChange={(e) => {
           setBill(e.target.value);
         }}
-        />
-        </div>
+      />
     </>
   );
 }
