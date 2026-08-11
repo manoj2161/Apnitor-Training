@@ -1,0 +1,252 @@
+:root {
+    --primary-color: #162b58;
+    --primary-dark: #5073d2;
+    --accent: #10b981;
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: #fff;
+    padding: 2rem;
+}
+
+.header h1 {
+    margin: 0 0 1rem;
+    font-size: 2rem;
+}
+
+#statistics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+#statistics span {
+    background: rgba(255, 255, 255, 0.16);
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+}
+
+main {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+section {
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+}
+
+.formBox {
+    background: linear-gradient(145deg, #ffffff, #f8fbff);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+}
+
+.inputData form {
+    display: grid;
+    gap: 1rem;
+}
+
+.inputData label {
+    font-weight: 700;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.inputData input[type="text"],
+.inputData input[type="email"],
+.inputData input[type="number"],
+.showData input,
+.showData select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid #dbe4f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputData input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.inputData input[type="radio"] {
+    accent-color: var(--primary-color);
+    margin-right: 0.45rem;
+    transform: translateY(1px);
+}
+
+.inputData input[type="radio"]+label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 1rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+button {
+    padding: 0.95rem 1.1rem;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent));
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(16, 185, 129, 0.22);
+}
+
+.showData h1 {
+    margin-top: 0;
+}
+
+.showData>span {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0.35rem 0.75rem 0.35rem 0;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.showData input,
+.showData select {
+    min-width: 180px;
+}
+
+#search {
+    min-width: 240px;
+}
+
+#employeeList {
+    margin-top: 1rem;
+    display: grid;
+    gap: 1rem;
+}
+
+#employeeList>div,
+#employeeList>p {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    #statistics {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .showData {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .showData > span {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .showData > span label,
+    .showData > span input,
+    .showData > span select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        padding: 1.25rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    main {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    section {
+        padding: 1rem;
+    }
+
+    .formBox {
+        padding: 1rem;
+    }
+
+    .inputData form {
+        gap: 0.85rem;
+    }
+
+    .showData {
+        gap: 0.75rem;
+    }
+
+    .showData > span {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0;
+    }
+
+    .showData input,
+    .showData select,
+    #search {
+        min-width: 100%;
+    }
+
+    button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #employeeList > div,
+    #employeeList > p {
+        padding: 0.9rem;
+    }
+}

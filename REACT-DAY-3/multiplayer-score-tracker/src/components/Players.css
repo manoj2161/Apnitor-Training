@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+}
+body {
+  background-color: #f0f0f0;
+}
+.derivedBoard {
+  width: 100%;
+
+  border-radius: 5px;
+  background-color: #2b90d8;
+  text-align: center;
+}
+
+.leaderHeading {
+  font-size: 2rem;
+  color: rgb(5, 39, 94);
+}
+.playerName {
+  font-weight: bold;
+  color: rgb(40, 38, 38);
+}
+.scoreBoard {
+  width: 100%;
+  background-color: #90caf9;
+  border-radius: 5px;
+}
+.scoreTable {
+  /* border: 2px solid black; */
+  width: 100%;
+}
+.tableHead {
+  width: 100%;
+  height: 50px;
+  background-color: #2196f3;
+}
+.tableData {
+  background-color: #0d47a1;
+  height: 40px;
+  text-align: center;
+  color: white;
+  font-weight: 500;
+}
+.tableData:hover {
+  background-color: rgb(37, 36, 36);
+}
+.incBtn {
+  width: 50px;
+  height: 25px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(110, 229, 110);
+}
+.decBtn {
+  width: 50px;
+  height: 25px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(235, 106, 106);
+}
+.resetBtn {
+  text-align: center;
+  width: 200px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  margin-left: 35%;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+.resetBtn:hover {
+  background-color: #2196f3;
+  color: white;
+  transition: 0.5s;
+  transform: translatey(-2px);
+}
+
+.score {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.inputForm {
+  width: 100%;
+  background-color: #306ac2;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.inputForm h1 {
+  color: white;
+}
+.inputForm label {
+  font-size: 1.2rem;
+  color: white;
+}
+.inputForm input {
+  width: 250px;
+  height: 40px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
+.submitBtn {
+  width: 100px;
+  height: 25px;
+  margin-left: 60px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: orangered;
+  color: white;
+}
+@media screen and (max-width: 480px) {
+  .inputForm input {
+    width: 50px;
+    height: 20px;
+  }
+  .resetBtn {
+    width: 50px;
+    height: 40px;
+    margin-top: 10px;
+    font-size: 0.5rem;
+  }
+  .tableHead{
+    font-size: 10px;
+  }
+  .tableData{
+    font-size: 10px;
+  }
+  .submitBtn{
+    margin-right: 30px;
+  }
+  .incBtn {
+  width: 20px;
+  height: 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(110, 229, 110);
+}
+  .decBtn {
+  width: 20px;
+  height: 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: rgb(235, 106, 106);
+}
+}
