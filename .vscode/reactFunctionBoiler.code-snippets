@@ -9,6 +9,7 @@
   "React Functional Component with Default Export": {
     "prefix": "rfde",
     "body": [
+      " ",
       "function ${1:${TM_FILENAME_BASE}}() {",
       "  return (",
       "    <>",
@@ -24,6 +25,7 @@
   "React Functional Component with Named Export": {
     "prefix": "rfne",
     "body": [
+      " ",
       "export const ${1:${TM_FILENAME_BASE}} = () => {",
       "  return (",
       "    <>",
