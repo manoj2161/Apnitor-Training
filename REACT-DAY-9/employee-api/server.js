@@ -52,6 +52,17 @@ app.patch("/employees/:id", (req, res) => {
   const id = Number(req.params.id);
   const employee = employees.find((employee) => employee.id === id);
   if (employee) {
+    employee.role = req.body.role;
+    res.status(200).json(employee);
+  } else {
+    res.status(404).send("Employee not found");
+  }
+});
+
+app.put("/employees/:id", (req, res) => {
+  const id = Number(req.params.id);
+  let employee = employees.find((employee) => employee.id === id);
+  if (employee) {
     employee.name = req.body.name;
     employee.role = req.body.role;
     res.status(200).json(employee);

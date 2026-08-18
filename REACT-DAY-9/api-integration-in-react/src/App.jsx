@@ -72,11 +72,11 @@ function App() {
       setLoading(false);
     }
   }
-  async function editEmployee(id, name, role) {
+  async function putEmployee(id, name, role) {
     const editUrl = `${url}/${id}`;
     try {
       const response = await fetch(editUrl, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -93,6 +93,27 @@ function App() {
       return setError(error.message);
     }
   }
+  async function patchEmployee(id, role) {
+    const editUrl = `${url}/${id}`;
+    try {
+      const response = await fetch(editUrl, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ role }),
+      });
+      if (!response.ok) {
+        return setError("Failed to edit the employee");
+      }
+      await getEmployees();
+      setEditId(null);
+      setEditRole("");
+    } catch (error) {
+      return setError(error.message);
+    }
+  }
+
   return (
     <>
       {loading && <p>loading...</p>}
@@ -133,10 +154,18 @@ function App() {
               onClick={() => {
                 setEditId(employee.id);
                 setEditRole(employee.role);
+              }}
+            >
+              Edit Role
+            </button>
+            <button
+              onClick={() => {
+                setEditId(employee.id);
+                setEditRole(employee.role);
                 setEditName(employee.name);
               }}
             >
-              Edit
+              Edit Name + Role
             </button>
             {editId === employee.id && (
               <div>
@@ -153,10 +182,17 @@ function App() {
                 />
                 <button
                   onClick={() => {
-                    editEmployee(employee.id, editName, editRole);
+                    patchEmployee(employee.id, editRole);
                   }}
                 >
-                  Save
+                  Save Role
+                </button>
+                <button
+                  onClick={() => {
+                    putEmployee(employee.id, editName, editRole);
+                  }}
+                >
+                  Save Role + Name
                 </button>
               </div>
             )}
