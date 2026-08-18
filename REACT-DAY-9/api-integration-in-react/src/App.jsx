@@ -6,21 +6,28 @@ function App() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [editRole, setEditRole] = useState("");
+  const [editName, setEditName] = useState("");
   const url = "http://localhost:3000/employees";
-  useEffect(() => {
-    async function getEmployees() {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          return setError("API request failed");
-        }
-        const employees = await response.json();
-        setData(employees);
-        setError("");
-      } catch (error) {
-        setError(error.message);
+  async function getEmployees() {
+    try {
+      setLoading(true);
+      const response = await fetch(url);
+      if (!response.ok) {
+        return setError("API request failed");
       }
+      const employees = await response.json();
+      setData(employees);
+      setError("");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
+  }
+  useEffect(() => {
     getEmployees();
   }, []);
   function handleSubmit(e) {
@@ -38,20 +45,59 @@ function App() {
         if (!response.ok) {
           return setError("Failed to send data");
         }
-        const addedEmployee = await response.json();
-        setData([...data, addedEmployee]);
+        await getEmployees();
         setName("");
         setRole("");
-        setError("")
+        setError("");
       } catch (error) {
         setError(error.message);
       }
     }
     addEmployee();
   }
+  async function deleteEmployee(id) {
+    const deleteUrl = `${url}/${id}`;
+    try {
+      setLoading(true);
+      const response = await fetch(deleteUrl, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        return setError("Cannot able to delete the employee");
+      }
+      await getEmployees();
+    } catch (error) {
+      return setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function editEmployee(id, name, role) {
+    const editUrl = `${url}/${id}`;
+    try {
+      const response = await fetch(editUrl, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, role }),
+      });
+      if (!response.ok) {
+        return setError("Failed to edit the employee");
+      }
+      await getEmployees();
+      setEditId(null);
+      setEditRole("");
+      setEditName("");
+    } catch (error) {
+      return setError(error.message);
+    }
+  }
   return (
     <>
+      {loading && <p>loading...</p>}
       {error && <p>{error}</p>}
+      {data.length === 0 && !loading && !error && <p>No Employee found.</p>}
       <form action="" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -71,7 +117,50 @@ function App() {
       </form>
       <div>
         {data.map((employee) => (
-          <p key={employee.id}>{employee.name}</p>
+          <div key={employee.id}>
+            <span>
+              Name : {employee.name} | Role : {employee.role}
+            </span>
+            <br />
+            <button
+              onClick={() => {
+                deleteEmployee(employee.id);
+              }}
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => {
+                setEditId(employee.id);
+                setEditRole(employee.role);
+                setEditName(employee.name);
+              }}
+            >
+              Edit
+            </button>
+            {editId === employee.id && (
+              <div>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+                <br />
+                <input
+                  type="text"
+                  value={editRole}
+                  onChange={(e) => setEditRole(e.target.value)}
+                />
+                <button
+                  onClick={() => {
+                    editEmployee(employee.id, editName, editRole);
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </>
