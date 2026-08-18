@@ -11,9 +11,7 @@ let employees = [
   { id: 3, name: "Karan", role: "Content Creator" },
 ];
 app.get("/employees", (req, res) => {
-  setTimeout(() => {
-    res.json(employees);
-  }, 5000);
+  res.json(employees);
 });
 app.listen(port, () => {
   console.log("server is running at port", port);
