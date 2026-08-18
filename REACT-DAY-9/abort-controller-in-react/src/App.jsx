@@ -5,7 +5,7 @@ function App() {
   const [data, setData] = useState([]);
   const [errors, setErrors] = useState("");
   const controllerRef = useRef(null);
-  const url = "http://localhost:3000/employees";
+  const url = import.meta.env.VITE_API_URL
   async function getEmployees() {
     controllerRef.current = new AbortController();
     try {
