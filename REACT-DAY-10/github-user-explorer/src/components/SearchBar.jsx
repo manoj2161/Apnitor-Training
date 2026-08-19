@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./SearchBar.css";
-export const SearchBar = ({ setUser }) => {
+export const SearchBar = ({ setUser, getUser }) => {
   const [username, setUsername] = useState("");
   function handleSubmit(e) {
     e.preventDefault();
@@ -9,6 +9,7 @@ export const SearchBar = ({ setUser }) => {
       return;
     }
     setUser(username.trim().toLowerCase());
+    getUser();
   }
   return (
     <>

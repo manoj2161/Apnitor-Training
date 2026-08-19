@@ -1,19 +1,15 @@
 import { SearchBar } from "./components/SearchBar";
 import { ProfileCard } from "./components/ProfileCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getGitHubUser } from "../api";
 import { getGitRepos } from "../api";
-import "./App/css";
+import "./App.css";
 function App() {
   const [user, setUser] = useState("");
   const [userData, setUserData] = useState(null);
   const [repo, setRepo] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setErrors] = useState("");
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
     const getUser = async () => {
       try {
         setErrors("");
@@ -37,11 +33,9 @@ function App() {
         setLoading(false);
       }
     };
-    getUser();
-  }, [user]);
   return (
     <>
-      <SearchBar setUser={setUser}></SearchBar>
+      <SearchBar setUser={setUser} getUser={getUser}></SearchBar>
       <ProfileCard
         user={user}
         repo={repo}
