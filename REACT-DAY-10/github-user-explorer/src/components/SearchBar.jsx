@@ -1,15 +1,14 @@
 import { useState } from "react";
 import "./SearchBar.css";
-export const SearchBar = ({ setUser, getUser }) => {
+export const SearchBar = ({ getUser }) => {
   const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
   function handleSubmit(e) {
     e.preventDefault();
     if (username.trim() === "") {
-      console.log("name is empty");
-      return;
+      return setError("Username cannot be empty");
     }
-    setUser(username.trim().toLowerCase());
-    getUser();
+    getUser(username.trim().toLowerCase());
   }
   return (
     <>
@@ -21,9 +20,11 @@ export const SearchBar = ({ setUser, getUser }) => {
             name="username"
             onChange={(e) => {
               setUsername(e.target.value);
+              setError("")
             }}
           />
           <button type="submit">Search</button>
+          {error && <p className="error">{error}</p>}
         </form>
       </div>
     </>

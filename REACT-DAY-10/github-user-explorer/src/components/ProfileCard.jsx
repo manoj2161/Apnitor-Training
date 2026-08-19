@@ -38,7 +38,8 @@ export const ProfileCard = ({ repo, error, loading, userData }) => {
                     <p>Public Repos : {userData.public_repos}</p>
                   </div>
                 </div>
-                <div className="repos">
+                {
+                  <div className="repos">
                   <h3>Public Repos</h3>
                   {repo.length === 0 ? (
                     <p>This user has no public repos</p>
@@ -66,6 +67,7 @@ export const ProfileCard = ({ repo, error, loading, userData }) => {
                     ))
                   )}
                 </div>
+            }
               </div>
             </div>
           )}
