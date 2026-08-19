@@ -1,0 +1,127 @@
+.profileCard {
+  width: 100%;
+  background-color: #03060a;
+  padding: 20px;
+}
+.loadingmsg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loadMsg {
+  color: white;
+  font-size: 2rem;
+}
+.userData {
+  width: 100%;
+  /* background-color: white; */
+  border: 2px solid #888e97;
+  border-radius: 10px;
+  color: white;
+}
+.profileHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #888e97;
+}
+.profileHeader p {
+  margin-left: 5px;
+  font-size: 1.5rem;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 5px;
+}
+.details {
+  width: 100%;
+  /* border: 2px solid red; */
+  padding: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile {
+  width: 400px;
+  margin: 10px;
+  display: flex;
+  justify-content: left;
+  margin-top: 30px;
+}
+.profile img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.names {
+  margin-top: 10px;
+}
+.loginName {
+  color: #888e97;
+}
+.bios {
+  margin: 15px;
+}
+.bioData {
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.repos {
+  width: 700px;
+  margin: 15px;
+}
+.repos h3 {
+  margin-bottom: 5px;
+}
+.repoDetail {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #888e97;
+  margin: 10px 0px 20px 0px;
+}
+.view {
+  margin: 0px 15px 10px 0px;
+  border: 1px solid #888e97;
+  border-radius: 12px;
+  padding: 5px;
+  color: #888e97;
+  font-size: 10px;
+}
+.repoName {
+  display: flex;
+  color: #4493f8;
+}
+.repoViewing {
+  display: flex;
+}
+.language span {
+  margin-right: 5px;
+}
+@media screen and (max-width: 768px) {
+  .details {
+    padding: 20px;
+  }
+  .profile {
+    width: 100px;
+  }
+  .bios{
+    width: 100px;
+  }
+  .profile img {
+    width: 60px;
+    height: 60px;
+  }
+  .userData {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .repos {
+    width: 300px;
+  }
+}
