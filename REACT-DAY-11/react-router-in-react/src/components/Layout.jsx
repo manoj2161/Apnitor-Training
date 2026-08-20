@@ -59,6 +59,8 @@ export const Layout = () => {
       <NavLink to="/dashboard">Dashboard</NavLink>
       <NavLink to="/dashboard/profile">Profile</NavLink>
       <NavLink to="/dashboard/settings">Settings</NavLink>
+      <NavLink to="/login">Login</NavLink>
+      <NavLink to="/admin">Admin Login</NavLink>
       <Outlet />
     </>
   );
