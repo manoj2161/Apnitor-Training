@@ -36,7 +36,7 @@ export const Blogs = () => {
     })
     .map((post) => {
       return (
-        <div key={post.blogId}>
+        <div className="allPosts" key={post.blogId}>
           <p>ID : {post.blogId}</p>
           <p>Title : {post.title}</p>
           <p>Description : {post.description}</p>
@@ -46,7 +46,7 @@ export const Blogs = () => {
     });
   const displayedPosts = posts.map((post) => {
     return (
-      <div key={post.blogId}>
+      <div className="allPosts" key={post.blogId}>
         <p>ID : {post.blogId}</p>
         <p>Title : {post.title}</p>
         <p>Description : {post.description}</p>
@@ -57,8 +57,7 @@ export const Blogs = () => {
   return (
     <>
       <div className="blogs">
-        <div>
-        
+        <div className="showBox">
           <NavLink className="showBtn" to="/blogs?category=development">
             Show development posts
           </NavLink>
