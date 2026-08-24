@@ -1,9 +1,10 @@
-import { Header } from "./components/Header";
+
+import { ToggleSidebar } from "./components/ToggleSidebar";
 
 function App() {
   return (
     <>
-      <Header></Header>
+      <ToggleSidebar />
     </>
   );
 }
