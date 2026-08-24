@@ -18,7 +18,7 @@ export const Header = () => {
               setMenu(true);
             }}
           >
-            <Menu className="text-white mr-2 sm:block md:hidden" />
+            <Menu className="text-white mr-2 block md:hidden" />
           </button>
           {menu && (
             <nav className="md:gap-6 text-white font-semibold flex flex-col relative top-34 -right-4 bg-purple-700 p-8 gap-8">
