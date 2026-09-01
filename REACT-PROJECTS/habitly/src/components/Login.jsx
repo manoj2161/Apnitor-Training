@@ -1,7 +1,9 @@
 import girlImage from "../assets/girlImage.png";
 import { useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeClosed } from "lucide-react";
+import { Mail, Lock, Eye, EyeClosed} from "lucide-react";
+import { useState } from "react";
 export const Login = () => {
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   function handleSignin(e) {
@@ -57,15 +59,35 @@ export const Login = () => {
                 Password
               </label>
               <Lock className="absolute lg:top-38 md:top-38 lg:top-17 top-24 left-10 lg:left-10 text-[#FDC8A0]" />
-              <Eye className="absolute lg:top-38 md:top-38 lg:top-17 top-24 right-12 text-[#FDC8A0]" />
-              <EyeClosed className="absolute lg:top-38 md:top-38 lg:top-17 top-24 right-12 text-[#FDC8A0]" />
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-                id=""
-                className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-              />
+              {show ? (
+                <EyeClosed
+                  onClick={() => setShow(false)}
+                  className="absolute lg:top-38 md:top-38 lg:top-17 top-24 right-12 text-[#FDC8A0]"
+                />
+              ) : (
+                <Eye
+                  onClick={() => setShow(true)}
+                  className="absolute lg:top-38 md:top-38 lg:top-17 top-24 right-12 text-[#FDC8A0]"
+                />
+              )}
+              {show ? (
+                <input
+                  type="text"
+                  name="password"
+                  placeholder="Enter your password"
+                  id=""
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                />
+              ) : (
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  id=""
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                />
+              )}
+
               <div className="flex justify-between md:justify-between">
                 <div>
                   <input

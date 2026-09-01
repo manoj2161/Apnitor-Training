@@ -1,8 +1,11 @@
 import girlImage from "../assets/girlImage.png";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, EyeClosed, UserRound, Eye } from "lucide-react";
+import { useState } from "react";
 
 export const SignUp = () => {
+  const [show, setShow] = useState(false);
+  const [cshow, setcShow] = useState(false);
   const navigate = useNavigate();
 
   function handleSignin(e) {
@@ -73,15 +76,34 @@ export const SignUp = () => {
                 Password
               </label>
               <Lock className="absolute lg:top-59 md:top-59 lg:top-17 top-38 left-10 lg:left-10 text-[#FDC8A0]" />
-              <Eye className="absolute lg:top-59 md:top-59 lg:top-17 top-38 right-12 text-[#FDC8A0]" />
-              <EyeClosed className="absolute lg:top-59 md:top-59 lg:top-17 top-38 right-12 text-[#FDC8A0]" />
-              <input
-                type="password"
-                name="password"
-                placeholder="Create your password"
-                id=""
-                className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-              />
+              {show ? (
+                <EyeClosed
+                  onClick={() => setShow(false)}
+                  className="absolute lg:top-59 md:top-59 lg:top-17 top-38 right-12 text-[#FDC8A0]"
+                />
+              ) : (
+                <Eye
+                  onClick={() => setShow(true)}
+                  className="absolute lg:top-59 md:top-59 lg:top-17 top-38 right-12 text-[#FDC8A0]"
+                />
+              )}
+              {show ? (
+                <input
+                  type="text"
+                  name="password"
+                  placeholder="Create your password"
+                  id=""
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                />
+              ) : (
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Create your password"
+                  id=""
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                />
+              )}
               <label
                 htmlFor="cpassword"
                 className="hidden md:block lg:block text-xl -mb-4 font-semibold"
@@ -89,15 +111,34 @@ export const SignUp = () => {
                 Confirm Password
               </label>
               <Lock className="absolute lg:top-80 md:top-80 lg:top-17 top-52 left-10 lg:left-10 text-[#FDC8A0]" />
-              <Eye className="absolute lg:top-80 md:top-80 lg:top-17 top-52 right-12 text-[#FDC8A0]" />
-              <EyeClosed className="absolute lg:top-80 md:top-80 lg:top-17 top-52 right-12 text-[#FDC8A0]" />
-              <input
-                type="password"
-                name="cpassword"
-                placeholder="Confirm your password"
-                id=""
-                className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-              />
+              {cshow ? (
+                <EyeClosed
+                  onClick={() => setcShow(false)}
+                  className="absolute lg:top-80 md:top-80 lg:top-17 top-52 right-12 text-[#FDC8A0]"
+                />
+              ) : (
+                <Eye
+                  onClick={() => setcShow(true)}
+                  className="absolute lg:top-80 md:top-80 lg:top-17 top-52 right-12 text-[#FDC8A0]"
+                />
+              )}
+              {cshow ? (
+                <input
+                  type="text"
+                  name="cpassword"
+                  placeholder="Confirm your password"
+                  id=""
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                />
+              ) : (
+                <input
+                  type="password"
+                  name="cpassword"
+                  placeholder="Confirm your password"
+                  id=""
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                />
+              )}
               <div className="flex justify-between md:justify-between">
                 <div>
                   <input

@@ -7,7 +7,9 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 export const AsideDashboard = () => {
+  const navigate = useNavigate();
   return (
     <>
       <aside className="flex flex-col justify-between h-screen bg-[#fef9f3] shadow">
@@ -55,10 +57,13 @@ export const AsideDashboard = () => {
           </nav>
         </div>
         <div className="ml-8 mb-2 font-semibold  hover:text-[#c64d26]">
-          <a href="#" className="flex gap-2 items-center">
+          <button
+            onClick={() => navigate("/")}
+            className="flex gap-2 items-center"
+          >
             <LogOut className="size-4" />
             Log Out
-          </a>
+          </button>
         </div>
       </aside>
     </>

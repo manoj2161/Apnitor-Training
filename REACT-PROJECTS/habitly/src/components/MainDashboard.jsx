@@ -10,7 +10,7 @@ export const MainDashboard = () => {
         <div className="absolute w-[100%]">
           {addHabit && <AddHabit setAddHabit={setAddHabit} />}
         </div>
-        <div className={clsx(addHabit && "opacity-9")}>
+        <div className={clsx(addHabit && "opacity-25 pointer-events-none")}>
           <main className="w-full mx-4 relative">
             <div className="p-2 rounded-lg m-2">
               <header className=" flex justify-between items-center px-2 h-16 ">
