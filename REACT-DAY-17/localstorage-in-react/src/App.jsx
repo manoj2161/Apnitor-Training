@@ -1,9 +1,9 @@
-import { Exercise3 } from "./components/Exercise3";
+import { Exercise9 } from "./components/Exercise9";
 
 function App() {
   return (
     <>
-      <Exercise3 />
+      <Exercise9 />
     </>
   );
 }
