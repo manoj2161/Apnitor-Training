@@ -4,13 +4,74 @@ import { Mail, Lock, EyeClosed, UserRound, Eye } from "lucide-react";
 import { useState } from "react";
 
 export const SignUp = () => {
+  const [formData, setFormData] = useState({
+    id: crypto.randomUUID(),
+    name: "",
+    email: "",
+    password: "",
+    cpassword: "",
+  });
+  const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [cshow, setcShow] = useState(false);
   const navigate = useNavigate();
-
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  }
   function handleSignin(e) {
     e.preventDefault();
-    navigate("/dashboard");
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must contain at least 6 characters";
+    }
+    if (!formData.cpassword.trim()) {
+      newErrors.cpassword = "Confirm Password is required";
+    } else if (formData.cpassword.length < 6) {
+      newErrors.cpassword = "Password must contain at least 6 characters";
+    } else if (formData.password !== formData.cpassword) {
+      newErrors.cpassword = "Password does not matched";
+    }
+    const userData = JSON.parse(localStorage.getItem("users")) || [];
+    const existingUser = userData.find(
+      (user) => user.email.toLowerCase() === formData.email.toLowerCase(),
+    );
+    if (existingUser) {
+      console.log("user already exists", existingUser);
+      return;
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    const newUser = {
+      id: crypto.randomUUID(),
+      name: formData.name.trim(),
+      email: formData.email.trim().toLowerCase(),
+      password: formData.password,
+      cpassword: formData.cpassword,
+    };
+    userData.push(newUser);
+    localStorage.setItem("users", JSON.stringify(userData));
+    console.log(userData);
   }
 
   return (
@@ -40,118 +101,163 @@ export const SignUp = () => {
           </div>
           <div className="">
             <form action="" className="flex flex-col p-8 gap-4 relative">
-              <label
-                htmlFor="name"
-                className="hidden md:block lg:block text-xl -mb-4 font-semibold"
-              >
-                Full Name
-              </label>
-              <UserRound className="absolute md:top-17 lg:top-17 top-10 left-10 lg:left-10 text-[#FDC8A0]" />
-              <input
-                type="text"
-                name="name"
-                placeholder="Enter your Full Name"
-                id=""
-                className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10"
-              />
-              <label
-                htmlFor="email"
-                className="hidden md:block lg:block text-xl -mb-4 font-semibold"
-              >
-                Email
-              </label>
-              <Mail className="absolute md:top-38 lg:top-38 top-24 left-10 lg:left-10 text-[#FDC8A0]" />
+              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
+                <label
+                  htmlFor="name"
+                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
+                >
+                  Full Name
+                </label>
+                <span className="absolute left-23 -top-1 text-red-500 h-2 hidden lg:block md:block">
+                  *
+                </span>
+                <UserRound className="absolute lg:top-8 md:top-8 top-8 left-2 text-[#FDC8A0]" />
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your Full Name"
+                  id=""
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 -mb-4 w-full absolute top-6"
+                />
+                <span className="text-sm text-red-500 absolute top-16 left-1">
+                  {errors && <p>{errors.name}</p>}
+                </span>
+              </div>
+              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
+                <label
+                  htmlFor="email"
+                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
+                >
+                  Email
+                </label>
 
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                id=""
-                className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10"
-              />
-              <label
-                htmlFor="password"
-                className="hidden md:block lg:block text-xl -mb-4 font-semibold"
-              >
-                Password
-              </label>
-              <Lock className="absolute lg:top-59 md:top-59 lg:top-17 top-38 left-10 lg:left-10 text-[#FDC8A0]" />
-              {show ? (
-                <EyeClosed
-                  onClick={() => setShow(false)}
-                  className="absolute lg:top-59 md:top-59 lg:top-17 top-38 right-12 text-[#FDC8A0]"
-                />
-              ) : (
-                <Eye
-                  onClick={() => setShow(true)}
-                  className="absolute lg:top-59 md:top-59 lg:top-17 top-38 right-12 text-[#FDC8A0]"
-                />
-              )}
-              {show ? (
+                <span className="absolute left-13 -top-1 text-red-500 hidden lg:block md:block">
+                  *
+                </span>
+
+                <Mail className="absolute md:top-8 lg:top-8 top-8 left-2 text-[#FDC8A0]" />
                 <input
-                  type="text"
-                  name="password"
-                  placeholder="Create your password"
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
                   id=""
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none w-full bg-transparent h-10 pl-10 absolute top-6"
                 />
-              ) : (
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Create your password"
-                  id=""
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-                />
-              )}
-              <label
-                htmlFor="cpassword"
-                className="hidden md:block lg:block text-xl -mb-4 font-semibold"
-              >
-                Confirm Password
-              </label>
-              <Lock className="absolute lg:top-80 md:top-80 lg:top-17 top-52 left-10 lg:left-10 text-[#FDC8A0]" />
-              {cshow ? (
-                <EyeClosed
-                  onClick={() => setcShow(false)}
-                  className="absolute lg:top-80 md:top-80 lg:top-17 top-52 right-12 text-[#FDC8A0]"
-                />
-              ) : (
-                <Eye
-                  onClick={() => setcShow(true)}
-                  className="absolute lg:top-80 md:top-80 lg:top-17 top-52 right-12 text-[#FDC8A0]"
-                />
-              )}
-              {cshow ? (
-                <input
-                  type="text"
-                  name="cpassword"
-                  placeholder="Confirm your password"
-                  id=""
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-                />
-              ) : (
-                <input
-                  type="password"
-                  name="cpassword"
-                  placeholder="Confirm your password"
-                  id=""
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-                />
-              )}
-              <div className="flex justify-between md:justify-between">
-                <div>
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    id=""
-                    className="mr-2 accent-orange-300"
+                <span className="text-sm text-red-500 absolute top-16 left-1">
+                  {errors && <p>{errors.email}</p>}
+                </span>
+              </div>
+              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
+                <label
+                  htmlFor="password"
+                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
+                >
+                  Password
+                </label>
+                <span className="absolute left-22 -top-1 text-red-500 h-2 hidden lg:block md:block">
+                  *
+                </span>
+                <Lock className="absolute lg:top-8 md:top-8 top-8 left-2 text-[#FDC8A0]" />
+                {show ? (
+                  <EyeClosed
+                    onClick={() => setShow(false)}
+                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
                   />
-                  <span className="font-semibold">Remember me</span>
-                </div>
-                <div className="text-[#c64d26] font-semibold">
-                  Forget password?
-                </div>
+                ) : (
+                  <Eye
+                    onClick={() => setShow(true)}
+                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
+                  />
+                )}
+                {show ? (
+                  <div>
+                    <input
+                      type="text"
+                      name="password"
+                      placeholder="Create your password"
+                      id=""
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
+                    />
+                    <span className="text-sm text-red-500 absolute top-16 left-1">
+                      {errors && <p>{errors.password}</p>}
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Create your password"
+                      id=""
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
+                    />
+                    <span className="text-sm text-red-500 absolute top-16 left-1">
+                      {errors && <p>{errors.password}</p>}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-6">
+                <label
+                  htmlFor="cpassword"
+                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
+                >
+                  Confirm Password
+                </label>
+                <span className="absolute left-42 -top-1 text-red-500 h-2 hidden lg:block md:block">
+                  *
+                </span>
+                <Lock className="absolute lg:top-8 md:top-8 top-8 left-2 text-[#FDC8A0]" />
+                {cshow ? (
+                  <EyeClosed
+                    onClick={() => setcShow(false)}
+                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
+                  />
+                ) : (
+                  <Eye
+                    onClick={() => setcShow(true)}
+                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
+                  />
+                )}
+                {cshow ? (
+                  <div>
+                    <input
+                      type="text"
+                      name="cpassword"
+                      placeholder="Confirm your password"
+                      id=""
+                      value={formData.cpassword}
+                      onChange={handleChange}
+                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
+                    />
+                    <span className="text-sm text-red-500 absolute top-16 left-1">
+                      {errors && <p>{errors.cpassword}</p>}
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="password"
+                      name="cpassword"
+                      placeholder="Confirm your password"
+                      id=""
+                      value={formData.cpassword}
+                      onChange={handleChange}
+                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
+                    />
+                    <span className="text-sm text-red-500 absolute top-16 left-1">
+                      {errors && <p>{errors.cpassword}</p>}
+                    </span>
+                  </div>
+                )}
               </div>
               <button
                 onClick={handleSignin}

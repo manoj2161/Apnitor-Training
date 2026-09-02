@@ -1,14 +1,29 @@
 import girlImage from "../assets/girlImage.png";
 import { useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeClosed} from "lucide-react";
+import { Mail, Lock, Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
 export const Login = () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
   function handleSignin(e) {
     e.preventDefault();
-    navigate("/dashboard");
+    const data = JSON.parse(localStorage.getItem("users"));
+    console.log(data);
+    if (data.email === formData.email && data.password === formData.password) {
+      console.log("Valid User");
+      navigate("/dashboard");
+    }
   }
 
   return (
@@ -37,7 +52,11 @@ export const Login = () => {
             <p className="text-[#c64d26] mt-2">Glad to see you again</p>
           </div>
           <div className="">
-            <form action="" className="flex flex-col p-8 gap-4 relative">
+            <form
+              action=""
+              onSubmit={handleSignin}
+              className="flex flex-col p-8 gap-4 relative"
+            >
               <label
                 htmlFor="email"
                 className="hidden md:block lg:block text-xl -mb-4 font-semibold"
@@ -50,6 +69,8 @@ export const Login = () => {
                 name="email"
                 placeholder="Enter your email"
                 id=""
+                value={formData.email}
+                onChange={handleChange}
                 className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10"
               />
               <label
@@ -76,6 +97,8 @@ export const Login = () => {
                   name="password"
                   placeholder="Enter your password"
                   id=""
+                  value={formData.password}
+                  onChange={handleChange}
                   className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
                 />
               ) : (
@@ -84,6 +107,8 @@ export const Login = () => {
                   name="password"
                   placeholder="Enter your password"
                   id=""
+                  value={formData.password}
+                  onChange={handleChange}
                   className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
                 />
               )}
@@ -103,8 +128,7 @@ export const Login = () => {
                 </div>
               </div>
               <button
-                onClick={handleSignin}
-                type="button"
+                type="submit"
                 className="bg-[#c64d26] rounded-md h-10 text-white text-lg"
               >
                 Sign In
