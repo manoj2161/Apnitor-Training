@@ -6,7 +6,9 @@ export const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
+  const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   function handleChange(e) {
@@ -15,15 +17,38 @@ export const Login = () => {
       ...prev,
       [name]: value,
     }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   }
   function handleSignin(e) {
     e.preventDefault();
-    const data = JSON.parse(localStorage.getItem("users"));
-    console.log(data);
-    if (data.email === formData.email && data.password === formData.password) {
-      console.log("Valid User");
-      navigate("/dashboard");
+    const newErrors = {};
+    const data = JSON.parse(localStorage.getItem("users")) || [];
+    const existingUser = data.find(
+      (user) => user.email === formData.email.toLowerCase(),
+    );
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!existingUser) {
+      newErrors.email = "User does not exists";
     }
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    } else if (existingUser && existingUser.password !== formData.password) {
+      newErrors.password = "Password is incorrect";
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    if (formData.rememberMe) {
+      localStorage.setItem("currentUser", JSON.stringify(existingUser.id));
+    } else {
+      sessionStorage.setItem("currentUser", JSON.stringify(existingUser.id));
+    }
+    navigate("/dashboard");
   }
 
   return (
@@ -57,68 +82,97 @@ export const Login = () => {
               onSubmit={handleSignin}
               className="flex flex-col p-8 gap-4 relative"
             >
-              <label
-                htmlFor="email"
-                className="hidden md:block lg:block text-xl -mb-4 font-semibold"
-              >
-                Email
-              </label>
-              <Mail className="absolute md:top-17 lg:top-17 top-10 left-10 lg:left-10 text-[#FDC8A0]" />
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                id=""
-                value={formData.email}
-                onChange={handleChange}
-                className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10"
-              />
-              <label
-                htmlFor="password"
-                className="hidden md:block lg:block text-xl -mb-4 font-semibold"
-              >
-                Password
-              </label>
-              <Lock className="absolute lg:top-38 md:top-38 lg:top-17 top-24 left-10 lg:left-10 text-[#FDC8A0]" />
-              {show ? (
-                <EyeClosed
-                  onClick={() => setShow(false)}
-                  className="absolute lg:top-38 md:top-38 lg:top-17 top-24 right-12 text-[#FDC8A0]"
-                />
-              ) : (
-                <Eye
-                  onClick={() => setShow(true)}
-                  className="absolute lg:top-38 md:top-38 lg:top-17 top-24 right-12 text-[#FDC8A0]"
-                />
-              )}
-              {show ? (
-                <input
-                  type="text"
-                  name="password"
-                  placeholder="Enter your password"
-                  id=""
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-                />
-              ) : (
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  id=""
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 "
-                />
-              )}
+              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
+                <label
+                  htmlFor="email"
+                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
+                >
+                  Email
+                </label>
 
-              <div className="flex justify-between md:justify-between">
+                <span className="absolute left-13 -top-1 text-red-500 hidden lg:block md:block">
+                  *
+                </span>
+
+                <Mail className="absolute md:top-8 lg:top-8 top-8 left-2 text-[#FDC8A0]" />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  id=""
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none w-full bg-transparent h-10 pl-10 absolute top-6"
+                />
+                <span className="text-sm text-red-500 absolute top-16 left-1">
+                  {errors && <p>{errors.email}</p>}
+                </span>
+              </div>
+              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
+                <label
+                  htmlFor="password"
+                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
+                >
+                  Password
+                </label>
+                <span className="absolute left-22 -top-1 text-red-500 h-2 hidden lg:block md:block">
+                  *
+                </span>
+                <Lock className="absolute lg:top-8 md:top-8 top-8 left-2 text-[#FDC8A0]" />
+                {show ? (
+                  <EyeClosed
+                    onClick={() => setShow(false)}
+                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
+                  />
+                ) : (
+                  <Eye
+                    onClick={() => setShow(true)}
+                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
+                  />
+                )}
+                {show ? (
+                  <div>
+                    <input
+                      type="text"
+                      name="password"
+                      placeholder="Create your password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
+                    />
+                    <span className="text-sm text-red-500 absolute top-16 left-1">
+                      {errors && <p>{errors.password}</p>}
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Create your password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
+                    />
+                    <span className="text-sm text-red-500 absolute top-16 left-1">
+                      {errors && <p>{errors.password}</p>}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between md:justify-between mt-4">
                 <div>
                   <input
                     type="checkbox"
-                    name="remember"
-                    id=""
+                    name="rememberMe"
+                    value={formData.rememberMe}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        rememberMe: e.target.checked,
+                      }))
+                    }
                     className="mr-2 accent-orange-300"
                   />
                   <span className="font-semibold">Remember me</span>

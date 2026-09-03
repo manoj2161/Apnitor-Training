@@ -1,21 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import greenLeave from "../assets/greenLeave.png";
 import { AddHabit } from "./AddHabit";
 import { Habbits } from "./Habbits";
 import clsx from "clsx";
 export const MainDashboard = () => {
+  const [user, setUser] = useState(null);
   const [addHabit, setAddHabit] = useState(false);
+  const [myhabits, setMyHabits] = useState([]);
+  const [editedHabit, setEditedHabit] = useState(null);
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem("users"));
+    const currentUser =
+      JSON.parse(localStorage.getItem("currentUser")) ||
+      JSON.parse(sessionStorage.getItem("currentUser"));
+    const loggedUser = users.find((user) => user.id === currentUser);
+    setUser(loggedUser);
+    const userHabits = loggedUser.habits;
+    setMyHabits(userHabits);
+  }, []);
+  function removeHabit(hid) {
+    const users = JSON.parse(localStorage.getItem("users"));
+    const currentUser =
+      JSON.parse(localStorage.getItem("currentUser")) ||
+      JSON.parse(sessionStorage.getItem("currentUser"));
+    const loggedUser = users.find((user) => user.id === currentUser);
+    const userHabits = loggedUser.habits;
+    const updatedHabits = userHabits.filter((habit) => habit.id !== hid);
+    loggedUser.habits = updatedHabits;
+    localStorage.setItem("users", JSON.stringify(users));
+    setMyHabits(updatedHabits);
+  }
   return (
     <>
       <div className="relative">
         <div className="absolute w-[100%]">
-          {addHabit && <AddHabit setAddHabit={setAddHabit} />}
+          {addHabit && (
+            <AddHabit
+              editedHabit={editedHabit}
+              setAddHabit={setAddHabit}
+              setMyHabits={setMyHabits}
+              setEditedHabit={setEditedHabit}
+            />
+          )}
         </div>
         <div className={clsx(addHabit && "opacity-25 pointer-events-none")}>
           <main className="w-full mx-4 relative">
             <div className="p-2 rounded-lg m-2">
               <header className=" flex justify-between items-center px-2 h-16 ">
                 <div>
-                  <h1 className="font-bold">Good Morning , Sir/Madam</h1>
+                  <h1 className="font-bold">
+                    Welcome , {user !== null && user.name}
+                  </h1>
                 </div>
                 <div>
                   <button
@@ -27,8 +62,14 @@ export const MainDashboard = () => {
                 </div>
               </header>
               <section className="flex justify-evenly items-center ">
-                <div className="font-semibold shadow-md border-gray-200 border h-18 w-32 flex justify-center items-center rounded-lg">
-                  Total Habbits
+                <div className="font-semibold shadow-md border-gray-200 border h-18 w-full flex justify-center items-center rounded-lg">
+                  <div>
+                    <img className="w-18" src={greenLeave} alt="" />
+                  </div>
+                  <div>
+                    <p className="text-sm">Total Habbits</p>
+                    <p>{myhabits.length}</p>
+                  </div>
                 </div>
                 <div className="font-semibold shadow-md border-gray-200 border h-18 w-32 flex justify-center items-center rounded-lg text-center">
                   Total Completions
@@ -67,7 +108,13 @@ export const MainDashboard = () => {
               </div>
             </section>
             <div>
-              <Habbits addHabit={setAddHabit} />
+              <Habbits
+                setEditedHabit={setEditedHabit}
+                setAddHabit={setAddHabit}
+                myhabits={myhabits}
+                removeHabit={removeHabit}
+                setMyHabits={setMyHabits}
+              />
             </div>
           </main>
         </div>

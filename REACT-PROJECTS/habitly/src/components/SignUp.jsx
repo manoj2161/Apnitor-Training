@@ -29,6 +29,10 @@ export const SignUp = () => {
   function handleSignin(e) {
     e.preventDefault();
     const newErrors = {};
+    const userData = JSON.parse(localStorage.getItem("users")) || [];
+    const existingUser = userData.find(
+      (user) => user.email.toLowerCase() === formData.email.toLowerCase(),
+    );
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
@@ -37,6 +41,8 @@ export const SignUp = () => {
       newErrors.email = "Email is required";
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
+    } else if (existingUser) {
+      newErrors.email = "User already Exists";
     }
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
@@ -50,14 +56,6 @@ export const SignUp = () => {
     } else if (formData.password !== formData.cpassword) {
       newErrors.cpassword = "Password does not matched";
     }
-    const userData = JSON.parse(localStorage.getItem("users")) || [];
-    const existingUser = userData.find(
-      (user) => user.email.toLowerCase() === formData.email.toLowerCase(),
-    );
-    if (existingUser) {
-      console.log("user already exists", existingUser);
-      return;
-    }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -68,10 +66,12 @@ export const SignUp = () => {
       email: formData.email.trim().toLowerCase(),
       password: formData.password,
       cpassword: formData.cpassword,
+      habits: [],
     };
     userData.push(newUser);
     localStorage.setItem("users", JSON.stringify(userData));
-    console.log(userData);
+
+    navigate("/");
   }
 
   return (

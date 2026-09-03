@@ -10,6 +10,11 @@ import {
 import { useNavigate } from "react-router-dom";
 export const AsideDashboard = () => {
   const navigate = useNavigate();
+  function handleLogout() {
+    localStorage.removeItem("currentUser");
+    sessionStorage.removeItem("currentUser");
+    navigate("/");
+  }
   return (
     <>
       <aside className="flex flex-col justify-between h-screen bg-[#fef9f3] shadow">
@@ -57,10 +62,7 @@ export const AsideDashboard = () => {
           </nav>
         </div>
         <div className="ml-8 mb-2 font-semibold  hover:text-[#c64d26]">
-          <button
-            onClick={() => navigate("/")}
-            className="flex gap-2 items-center"
-          >
+          <button onClick={handleLogout}>
             <LogOut className="size-4" />
             Log Out
           </button>

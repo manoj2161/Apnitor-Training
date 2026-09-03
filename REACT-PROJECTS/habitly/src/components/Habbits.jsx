@@ -1,31 +1,61 @@
 import { Pencil, Trash2, GripVertical } from "lucide-react";
 import { NoHabbit } from "./NoHabbit";
-const checkbox =
-  "h-4 w-4 appearance-none rounded-full border-2 border-orange-300 checked:bg-orange-300";
-export const Habbits = ({ addHabit }) => {
-  const habbits = [
+export const Habbits = ({
+  setAddHabit,
+  myhabits,
+  removeHabit,
+  setEditedHabit,
+  setMyHabits,
+}) => {
+  const checkbox =
+    "h-4 w-4 appearance-none rounded-full border-2 border-orange-300 checked:bg-orange-300";
+  const weekDays = [
     {
-      id: "h1",
-      ownerId: "u1",
-      name: "Drink Water",
-      color: "#4ade80",
-      completedDated: ["2026-08-31", "2026-08-30"],
+      date: "2026-08-31",
+      day: "Mon",
     },
     {
-      id: "h2",
-      ownerId: "u2",
-      name: "Study",
-      color: "#4f23c7",
-      completedDated: ["2026-08-31", "2026-08-30"],
+      date: "2026-09-01",
+      day: "Tue",
     },
     {
-      id: "h3",
-      ownerId: "u3",
-      name: "Playing games",
-      color: "#eb720f",
-      completedDated: ["2026-08-31", "2026-08-30"],
+      date: "2026-09-02",
+      day: "Wed",
+    },
+    {
+      date: "2026-09-03",
+      day: "Thu",
+    },
+    {
+      date: "2026-09-04",
+      day: "Fri",
+    },
+    {
+      date: "2026-09-05",
+      day: "Sat",
+    },
+    {
+      date: "2026-09-06",
+      day: "Sun",
     },
   ];
+  const today = new Date().toLocaleDateString("en-CA");
+  function toggleHabitDay(id, date) {
+    const users = JSON.parse(localStorage.getItem("users"));
+    const currentUser =
+      JSON.parse(localStorage.getItem("currentUser")) ||
+      JSON.parse(sessionStorage.getItem("currentUser"));
+    const loggedUser = users.find((user) => user.id == currentUser);
+    const habits = loggedUser.habits;
+    const habit = habits.find((habit) => habit.id === id);
+    if (habit.completedDays.includes(date)) {;
+      habit.completedDays = habit.completedDays.filter((day) => day !== date);
+    } else {
+      habit.completedDays.push(date);
+    }
+    localStorage.setItem("users", JSON.stringify(users));
+    setMyHabits(habits);
+  }
   return (
     <>
       <div>
@@ -34,51 +64,44 @@ export const Habbits = ({ addHabit }) => {
             <h2 className="text-xl font-bold pl-2">My Habbits</h2>
           </div>
           <div>
-            {habbits.map((habbit) => (
+            {myhabits.map((habbit) => (
               <div
                 key={habbit.id}
                 className="flex gap-2 py-2 justify-between items-center"
               >
                 <GripVertical className="w-5 text-gray-600" />
                 <p
-                  className="w-8 h-5 rounded-full ml-2"
+                  className="w-5 h-5 rounded-full ml-2"
                   style={{ backgroundColor: habbit.color }}
                 ></p>
                 <p className="w-28">{habbit.name}</p>
                 <div className="flex gap-4">
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Mon</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Tue</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Wed</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Thu</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Fri</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Sat</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <input type="checkbox" name="" id="" className={checkbox} />
-                    <span className="text-sm font-semibold">Sun</span>
-                  </div>
+                  {weekDays.map((day) => (
+                    <div key={day.date} className="flex flex-col items-center">
+                      <input
+                        type="checkbox"
+                        checked={habbit.completedDays.includes(day.date)}
+                        disabled={day.date !== today}
+                        onChange={() => toggleHabitDay(habbit.id, day.date)}
+                        className={checkbox}
+                      />
+                      <span>{day.day}</span>
+                    </div>
+                  ))}
                 </div>
-                <button>
+                <button
+                  onClick={() => {
+                    setAddHabit(true);
+                    setEditedHabit(habbit);
+                  }}
+                >
                   <Pencil className="w-5 text-gray-700 mb-2" />
                 </button>
-                <button>
+                <button
+                  onClick={() => {
+                    removeHabit(habbit.id);
+                  }}
+                >
                   <Trash2 className="w-5 mb-2 text-red-500" />
                 </button>
               </div>
@@ -86,9 +109,9 @@ export const Habbits = ({ addHabit }) => {
           </div>
         </div>
 
-        {habbits.length === 0 && (
+        {myhabits.length === 0 && (
           <div>
-            <NoHabbit addHabit={addHabit} />
+            <NoHabbit addHabit={setAddHabit} />
           </div>
         )}
       </div>
