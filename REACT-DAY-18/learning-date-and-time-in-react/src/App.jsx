@@ -116,11 +116,174 @@ function App() {
   //   monday.setDate(monday.getDate() + 1);
   // }
 
-  function formatDate(date) {
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-  }
-  console.log(formatDate(new Date(2026, 8, 3)));
-  return <></>;
+  // function formatDate(date) {
+  //   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+  // }
+  // console.log(formatDate(new Date(2026, 8, 3)));
+
+  // const date = new Date("2026-09-03");
+
+  // console.log(date);
+  // console.log(date.getFullYear());
+  // console.log(date.getMonth());
+  // console.log(date.getDate());
+
+  // const date1 = new Date(2026, 8, 3);
+
+  // console.log(date1.toString());
+  // console.log(date2.toString());
+
+  // console.log(date1.getTime());
+  // console.log(date2.getTime());
+
+  // const date = new Date("2026-09-03");
+  // function fromatDate(date) {
+  //   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //   const day = date.getDate().toString().padStart(2, "0");
+  //   const year = date.getFullYear();
+  //   return `${year}-${month}-${day}`;
+  // }
+
+  // console.log(fromatDate(date));
+  // const date = new Date(2026, 8, 3);
+
+  // console.log(date.toString());
+  // console.log(date.toISOString());
+
+  //  const date = new Date(2026, 8, 6);
+
+  //  const day = date.getDay();
+
+  //  const daysFromMonday = day === 0 ? 6 : day - 1;
+
+  //  date.setDate(date.getDate() - daysFromMonday);
+
+  //  console.log(date.toDateString());
+
+  // const date = new Date();
+  // const todayString = new Date().toLocaleDateString("en-CA");
+  // const day = date.getDay();
+
+  // const daysFromMonday = day === 0 ? 6 : day - 1;
+
+  // date.setDate(date.getDate() - daysFromMonday);
+  // const week = [];
+  // const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  // for (let i = 0; i < 7; i++) {
+  //   week.push({
+  //     date: date.toLocaleDateString("en-CA"),
+  //     day: dayNames[i],
+  //   });
+  //   date.setDate(date.getDate() + 1);
+  // }
+
+  // const today = week.find((day) => day.date === todayString);
+  // const dates = week.map((day) => day.date);
+  // const weekend = week.filter((day) => day.day === "Sat" || day.day === "Sun");
+
+  // const daysBeforeToday = week.filter((day) => day.date < todayString);
+  // const pastDates = daysBeforeToday.map((day) => day.date);
+  // // console.log(pastDates);
+  // const completedDays = ["2026-09-01", "2026-09-03", "2026-09-04"];
+  // const checkedDate = "2026-09-03";
+  // // const completed = completedDays.some((day) => day === checkedDate);
+  // const completed = completedDays.includes("2026-09-02");
+  // console.log(completed);
+
+  // const completedDays = ["2026-09-01", "2026-09-03"];
+
+  // const checkedDate = "2026-09-04";
+  // completedDays.push(checkedDate);
+  // console.log(completedDays);
+
+  // const completedDays = ["2026-09-01", "2026-09-03", "2026-09-04"];
+
+  // const checkedDate = "2026-09-03";
+  // const updatedCompletedDays = completedDays.filter(
+  //   (day) => day !== checkedDate,
+  // );
+  // console.log(updatedCompletedDays);
+
+  // const dates = ["2026-09-04", "2026-09-01", "2026-09-03", "2026-09-02"];
+
+  // dates.sort((a, b) => a.localeCompare(b));
+
+  // console.log(dates);
+  // const completedDays = [
+  //   "2026-09-04",
+  //   "2026-09-01",
+  //   "2026-09-06",
+  //   "2026-09-03",
+  // ];
+
+  // const sorted = completedDays.sort((a, b) => a.localeCompare(b));
+  // console.log(sorted);
+
+  // const habit = {
+  //   id: 1,
+  //   name: "Exercise",
+  //   completedDays: [
+  //     "2026-08-28",
+  //     "2026-08-29",
+  //     "2026-09-01",
+  //     "2026-09-03",
+  //     "2026-09-04",
+  //   ],
+  // };
+  // const totalCompletions = habit.completedDays.reduce((acc) => {
+  //   return acc + 1;
+  // }, 0);
+  // console.log(totalCompletions);
+
+  const habits = [
+    {
+      id: 1,
+      name: "Exercise",
+      completedDays: ["2026-09-01", "2026-09-03", "2026-09-04"],
+    },
+    {
+      id: 2,
+      name: "Read Book",
+      completedDays: ["2026-09-02", "2026-09-04"],
+    },
+    {
+      id: 3,
+      name: "Drink Water",
+      completedDays: ["2026-09-01", "2026-09-02", "2026-09-03", "2026-09-04"],
+    },
+  ];
+
+  const totalCompletions = habits.reduce((acc, habit) => {
+    return acc + habit.completedDays.length;
+  }, 0);
+  console.log(totalCompletions);
+  const today = new Date().toLocaleDateString("en-CA");
+  const completedToday = habits.reduce((acc, habit) => {
+    if (habit.completedDays.includes(today)) {
+      return acc + 1;
+    }
+    return acc;
+  }, 0);
+  console.log(completedToday);
+  return (
+    <>
+      <div>
+        {/* {week.map((day) => (
+          <div>
+            <input type="checkbox" disabled={today.date !== day.date} />
+            <p>{day.date}</p>
+            <p>{day.day}</p>
+          </div>
+        ))} */}
+
+        {/* {daysBeforeToday.map((day) => (
+          <div>
+            <p>{day.date}</p>
+          </div>
+        ))} */}
+      </div>
+    </>
+  );
 }
 
 export default App;
