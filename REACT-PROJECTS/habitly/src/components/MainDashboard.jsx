@@ -30,6 +30,52 @@ export const MainDashboard = () => {
     localStorage.setItem("users", JSON.stringify(users));
     setMyHabits(updatedHabits);
   }
+
+  const totalCompletions = myhabits.reduce((acc, habit) => {
+    return acc + habit.completedDays.length;
+  }, 0);
+
+  function getLargestStreak(habits) {
+    let largestStreak = 0;
+    let largestStreakHabit = null;
+
+    habits.forEach((habit) => {
+      const dates = [...habit.completedDays].sort();
+
+      let currentStreak = dates.length > 0 ? 1 : 0;
+      let habitLargestStreak = currentStreak;
+
+      for (let i = 1; i < dates.length; i++) {
+        const previousDate = new Date(dates[i - 1]);
+        const currentDate = new Date(dates[i]);
+
+        const difference = (currentDate - previousDate) / (1000 * 60 * 60 * 24);
+
+        if (difference === 1) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+
+        if (currentStreak > habitLargestStreak) {
+          habitLargestStreak = currentStreak;
+        }
+      }
+
+      if (habitLargestStreak > largestStreak) {
+        largestStreak = habitLargestStreak;
+        largestStreakHabit = habit;
+      }
+    });
+
+    return {
+      streak: largestStreak,
+      habit: largestStreakHabit,
+    };
+  }
+  const result = getLargestStreak(myhabits);
+
+  console.log(result);
   return (
     <>
       <div className="relative">
@@ -72,13 +118,17 @@ export const MainDashboard = () => {
                   </div>
                 </div>
                 <div className="font-semibold shadow-md border-gray-200 border h-18 w-32 flex justify-center items-center rounded-lg text-center">
-                  Total Completions
+                  <div>
+                    <p>Total Completions</p>
+                    <p>{totalCompletions}</p>
+                  </div>
                 </div>
                 <div className="font-semibold shadow-md border-gray-200 border h-18 w-32 flex justify-center items-center rounded-lg">
-                  Largest Streak
+                  Largest Streak<p>{result.streak}</p>
                 </div>
                 <div className="font-semibold shadow-md border-gray-200 border h-18 w-32 flex justify-center items-center rounded-lg">
                   Most Streaked
+                  {result.habit !== null && <p>{result.habit.name}</p>}
                 </div>
               </section>
             </div>

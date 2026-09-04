@@ -2,11 +2,12 @@ import girlImage from "../assets/girlImage.png";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
-export const Login = () => {
+export const Login = ({ isLoggedIn, setIsLoggedIn }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
+    isLoggedIn,
   });
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -48,6 +49,7 @@ export const Login = () => {
     } else {
       sessionStorage.setItem("currentUser", JSON.stringify(existingUser.id));
     }
+    setIsLoggedIn(true);
     navigate("/dashboard");
   }
 
