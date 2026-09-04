@@ -24,27 +24,27 @@ export const AsideDashboard = () => {
         </div>
         <div>
           <nav className="flex flex-col gap-4 mb-88 ml-8 font-semibold items-left">
-            <a
-              href="#"
+            <button
+              onClick={() => navigate("/dashboard")}
               className="flex gap-2 items-center hover:bg-[#fbede3] w-36 p-2 rounded-lg hover:text-[#c64d26]"
             >
               <LayoutDashboard className="size-4" />
               Dashboard
-            </a>
-            <a
-              href="#"
+            </button>
+            <button
+              onClick={() => navigate("/myhabits")}
               className="flex gap-2 items-center hover:bg-[#fbede3] w-36 p-2 rounded-lg hover:text-[#c64d26]"
             >
               <ChartNetwork className="size-4" />
               Habbits
-            </a>
-            <a
-              href="#"
+            </button>
+            <button
+              onClick={() => navigate("/calender")}
               className="flex gap-2 items-center hover:bg-[#fbede3] w-36 p-2 rounded-lg hover:text-[#c64d26]"
             >
               <CalendarDays className="size-4" />
               Calander
-            </a>
+            </button>
             <a
               href="#"
               className="flex gap-2 items-center hover:bg-[#fbede3] w-36 p-2 rounded-lg hover:text-[#c64d26]"

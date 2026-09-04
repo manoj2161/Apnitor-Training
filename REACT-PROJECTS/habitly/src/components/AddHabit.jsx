@@ -85,13 +85,18 @@ export const AddHabit = ({
     if (editedHabit) {
       setHabit(editedHabit);
     }
-  }, [editedHabit]);
+  }, [editedHabit,]);
+
+  function handleClose() {
+    setAddHabit(false);
+    setEditedHabit(null);
+  }
   return (
     <>
-      <div className="min-h-screen flex justify-center items-center">
+      <div className="fixed inset-0 z-50 min-h-screen flex justify-center items-center">
         <div className="w-118 p-4 rounded-lg shadow shadow-[#dd4b25] bg-[#fdfaf2] z-50 flex flex-col gap-8 relative">
           <X
-            onClick={() => setAddHabit((prev) => !prev)}
+            onClick={handleClose}
             className="absolute right-4 text-[#a97c5e]"
           />
           <div className="flex">
@@ -166,7 +171,7 @@ export const AddHabit = ({
           <div className="bg-[#fdf1e5] rounded-lg p-2">
             <p className="text-[#cb5b42]">Tip</p>
             <p className="text-[#a97c5e] text-sm">
-              Small habits today,big changes tomorrow.
+              Small habits today, big changes tomorrow.
             </p>
           </div>
           <div className="flex flex-col gap-4 justify-center items-center">
@@ -177,7 +182,7 @@ export const AddHabit = ({
               {editedHabit === null ? "Add Habit" : "Edit Habit"}
             </button>
             <button
-              onClick={() => setAddHabit((prev) => !prev)}
+              onClick={handleClose}
               className="bg-[#fdf8f4] rounded-md w-98 text-[#a1785d] border border-[#a1785d] py-2"
             >
               Cancel

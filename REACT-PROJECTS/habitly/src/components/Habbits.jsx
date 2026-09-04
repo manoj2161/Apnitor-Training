@@ -9,46 +9,30 @@ export const Habbits = ({
 }) => {
   const checkbox =
     "h-4 w-4 appearance-none rounded-full border-2 border-orange-300 checked:bg-orange-300";
-  const weekDays = [
-    {
-      date: "2026-08-31",
-      day: "Mon",
-    },
-    {
-      date: "2026-09-01",
-      day: "Tue",
-    },
-    {
-      date: "2026-09-02",
-      day: "Wed",
-    },
-    {
-      date: "2026-09-03",
-      day: "Thu",
-    },
-    {
-      date: "2026-09-04",
-      day: "Fri",
-    },
-    {
-      date: "2026-09-05",
-      day: "Sat",
-    },
-    {
-      date: "2026-09-06",
-      day: "Sun",
-    },
-  ];
-  const today = new Date().toLocaleDateString("en-CA");
+  const todayDate = new Date().toLocaleDateString("en-CA");
+  const today = new Date();
+  const day = today.getDay();
+  const daysFromMonday = day === 0 ? 6 : day - 1;
+  today.setDate(today.getDate() - daysFromMonday);
+  const weekDays = [];
+  const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  for (let i = 0; i < 7; i++) {
+    weekDays.push({
+      date: today.toLocaleDateString("en-CA"),
+      day: dayNames[i],
+    });
+    today.setDate(today.getDate() + 1);
+  }
+
   function toggleHabitDay(id, date) {
     const users = JSON.parse(localStorage.getItem("users"));
     const currentUser =
       JSON.parse(localStorage.getItem("currentUser")) ||
       JSON.parse(sessionStorage.getItem("currentUser"));
-    const loggedUser = users.find((user) => user.id == currentUser);
+    const loggedUser = users.find((user) => user.id === currentUser);
     const habits = loggedUser.habits;
     const habit = habits.find((habit) => habit.id === id);
-    if (habit.completedDays.includes(date)) {;
+    if (habit.completedDays.includes(date)) {
       habit.completedDays = habit.completedDays.filter((day) => day !== date);
     } else {
       habit.completedDays.push(date);
@@ -81,7 +65,7 @@ export const Habbits = ({
                       <input
                         type="checkbox"
                         checked={habbit.completedDays.includes(day.date)}
-                        disabled={day.date !== today}
+                        disabled={day.date !== todayDate}
                         onChange={() => toggleHabitDay(habbit.id, day.date)}
                         className={checkbox}
                       />
