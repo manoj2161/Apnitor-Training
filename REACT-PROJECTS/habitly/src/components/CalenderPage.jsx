@@ -71,82 +71,126 @@ export const CalendarPage = () => {
       </div>
 
       <div className="w-[80%] p-4">
-        <h1>Calender</h1>
+        <div>
+          <h1 className="text-[64px] font-bold text-center text-[#c54c24] shadow-lg rounded">
+            Calendar
+          </h1>
+        </div>
         {selectedHabit ? (
-          <div>
-            <div>Viewing : {selectedHabit.name}</div>
-            <div>Completed Days : {selectedHabit.completedDays.length}</div>
+          <div className="h-16 my-4 text-center text-gray-600">
+            <div className="my-2">
+              Viewing :
+              <span
+                style={{ color: selectedHabit.color }}
+                className="font-bold text-xl"
+              >
+                {selectedHabit.name}
+              </span>
+            </div>
+            <div>
+              Completed Days :
+              <span
+                style={{ color: selectedHabit.color }}
+                className="font-bold text-xl"
+              >
+                {selectedHabit.completedDays.length}
+              </span>
+            </div>
           </div>
         ) : (
-          <div>Select a Habit to get the data</div>
+          <div className="text-xl text-center my-4 text-gray-600">
+            Select a Habit to get the data
+          </div>
         )}
-        <div className="flex justify-between mx-4">
-          <button onClick={previousMonth}>
-            <ArrowLeft />
-          </button>
-          <h2>
-            {monthNames[month]}
-            {year}
-          </h2>
-          <button onClick={nextMonth}>
-            <ArrowRight />
-          </button>
-        </div>
-        <div className="grid grid-cols-7">
-          {dayNames.map((day, index) => (
-            <div key={index}>{day}</div>
-          ))}
-        </div>
-        <div className="grid grid-cols-7">
-          {calendarDays.map((day, index) => {
-            if (day === null) {
-              return <div key={index}></div>;
-            } else {
-              const dateString = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-              const isCompleted =
-                selectedHabit?.completedDays?.includes(dateString);
-              const today = new Date();
-              const isToday =
-                year === today.getFullYear() &&
-                month === today.getMonth() &&
-                day === today.getDate();
-              console.log(isToday);
-              return (
-                <div
-                  style={{
-                    backgroundColor: isCompleted
-                      ? selectedHabit?.color
-                      : undefined,
-                  }}
-                  key={index}
-                  className={clsx(
-                    isCompleted && `rounded-full w-6`,
-                    isToday && "shadow-lg border ring-2",
-                  )}
-                >
-                  {day}
-                </div>
-              );
-            }
-          })}
+        <div className=" shadow-xl p-8 rounded-lg bg-[#fef9f3]">
+          <div className="flex justify-between mx-2">
+            <button
+              className="rounded px-2 py-1 my-2 shadow-xl border border-[#c54c24] text-[#c54c24]"
+              onClick={previousMonth}
+            >
+              <ArrowLeft />
+            </button>
+            <h2 className="text-xl font-semibold text-[#c54c24]">
+              {monthNames[month]},{year}
+            </h2>
+            <button
+              className="rounded px-2 my-2 shadow-xl border border-[#c54c24] text-[#c54c24]"
+              onClick={nextMonth}
+            >
+              <ArrowRight />
+            </button>
+          </div>
+          <div className="grid grid-cols-7 text-lg my-4 place-items-center text-[#c54c24]">
+            {dayNames.map((day, index) => (
+              <div key={index}>{day}</div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 text-lg place-items-center text-[#9d623d] gap-4">
+            {calendarDays.map((day, index) => {
+              if (day === null) {
+                return <div key={index}></div>;
+              } else {
+                const dateString = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+                const isCompleted =
+                  selectedHabit?.completedDays?.includes(dateString);
+                const today = new Date();
+                const isToday =
+                  year === today.getFullYear() &&
+                  month === today.getMonth() &&
+                  day === today.getDate();
+                console.log(isToday);
+                return (
+                  <div
+                    style={{
+                      backgroundColor: isCompleted
+                        ? selectedHabit?.color
+                        : undefined,
+                    }}
+                    key={index}
+                    className={clsx(
+                      isCompleted && `rounded-full w-6`,
+                      isToday &&
+                        "shadow-lg rounded-lg px-2 shadow bg-orange-200 text-[#c54c24]",
+                      "hover:shadow-lg hover:rounded-lg hover:bg-orange-200 hover:px-2 hover:shadow hover:text-[#c54c24]",
+                    )}
+                  >
+                    {day}
+                  </div>
+                );
+              }
+            })}
+          </div>
         </div>
 
-        <div>
+        <div className="shadow-lg my-8 border border-t-transparent rounded border-gray-100">
+          <h1 className="text-center m-4 text-3xl font-bold text-[]">
+            My habits
+          </h1>
           {myhabits.map((habit) => (
             <div
               key={habit.id}
               className={clsx(
-                selectedHabit?.id === habit.id && "bg-gray-500",
-                "flex gap-2 py-2 items-center",
+                selectedHabit?.id === habit.id && "bg-[#9F643D] text-white",
+                "flex justify-between gap-2 py-2 items-center ",
+                "mx-2 my-4 shadow-lg border rounded border-gray-300",
               )}
             >
-              <GripVertical className="w-5 text-gray-600" />
-              <p
-                className="w-5 h-5 rounded-full ml-2"
-                style={{ backgroundColor: habit.color }}
-              ></p>
-              <p className="w-28">{habit.name}</p>
-              <button onClick={() => setSelectedHabit(habit)}>Click</button>
+              <div className="flex gap-4 ml-4">
+                <GripVertical className="w-5 text-gray-400" />
+                <p
+                  className="w-5 h-5 rounded-full ml-2"
+                  style={{ backgroundColor: habit.color }}
+                ></p>
+                <p className="w-28 ml-4 ">{habit.name}</p>
+              </div>
+              <div className="mr-4">
+                <button
+                  className=" p-2 rounded shadow-md bg-orange-100 font-semibold text-[#c54c24]"
+                  onClick={() => setSelectedHabit(habit)}
+                >
+                  Click to get Data
+                </button>
+              </div>
             </div>
           ))}
         </div>
