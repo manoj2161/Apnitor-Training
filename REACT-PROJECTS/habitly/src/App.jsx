@@ -1,30 +1,79 @@
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login } from "./components/Login";
 import { SignUp } from "./components/SignUp";
 import { Dashboard } from "./components/Dashboard";
 import { HabitsPage } from "./components/HabitsPage";
 import { CalendarPage } from "./components/CalenderPage";
-import { useState } from "react";
+import { StatisticsPage } from "./components/StatisticsPage";
+import { SettingsPage } from "./components/SettingsPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { PageNotFound } from "./components/PageNotFound";
+import { PageLoader } from "./components/PageLoader";
+import { ForgotPassword } from "./components/ForgotPassword";
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return Boolean(
+      localStorage.getItem("currentUser") ||
+      sessionStorage.getItem("currentUser"),
+    );
+  });
+
   return (
     <>
+      <PageLoader />
+
       <Routes>
+        <Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+
         <Route
-          path="/"
+          path="/signup"
+          element={<SignUp setIsLoggedIn={setIsLoggedIn} />}
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/dashboard"
           element={
-            <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Dashboard />
+            </ProtectedRoute>
           }
-        ></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
-        <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
-        </Route>
-        <Route path="/myhabits" element={<HabitsPage />}></Route>
-        <Route path="/calender" element={<CalendarPage />}></Route>
-        <Route path="*" element={<PageNotFound />}></Route>
+        />
+
+        <Route
+          path="/myhabits"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <HabitsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/calender"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <CalendarPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/statistics"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <StatisticsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   );

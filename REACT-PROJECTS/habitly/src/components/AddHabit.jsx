@@ -16,7 +16,9 @@ export const AddHabit = ({
     entryDate: new Date().toLocaleDateString("en-CA"),
     completedDays: [],
   });
+
   const [errors, setErrors] = useState({});
+
   const habitColors = [
     "#7FAF6A",
     "#F5A04C",
@@ -27,169 +29,215 @@ export const AddHabit = ({
     "#E982B2",
     "#A7A9AC",
   ];
+
   function handleHabitChange(e) {
     const { name, value } = e.target;
+
     setHabit((prev) => ({
       ...prev,
       [name]: value,
     }));
+
     setErrors((prev) => {
       const nextErrors = { ...prev };
       delete nextErrors[name];
       return nextErrors;
     });
   }
+
   function addHabit(e) {
     e.preventDefault();
+
     const newErrors = {};
+
     const currentUser =
       JSON.parse(localStorage.getItem("currentUser")) ||
       JSON.parse(sessionStorage.getItem("currentUser"));
-    const users = JSON.parse(localStorage.getItem("users"));
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
     if (!habit.name.trim()) {
       newErrors.name = "Please enter a habit";
     }
+
     if (!habit.color) {
       newErrors.color = "Please select a color";
     }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
+
     const existingUser = users.find((user) => user.id === currentUser);
+
     if (!existingUser) {
       return;
     }
+
     if (editedHabit === null) {
       existingUser.habits.push(habit);
+
       localStorage.setItem("users", JSON.stringify(users));
-      setMyHabits(existingUser.habits);
-      setAddHabit((prev) => !prev);
+
+      setMyHabits([...existingUser.habits]);
+      setAddHabit(false);
     }
+
     if (editedHabit !== null) {
       const habitID = existingUser.habits.findIndex(
-        (habit) => habit.id === editedHabit.id,
+        (item) => item.id === editedHabit.id,
       );
+
+      if (habitID === -1) return;
+
       existingUser.habits[habitID] = {
         ...existingUser.habits[habitID],
         name: habit.name,
         color: habit.color,
       };
+
       localStorage.setItem("users", JSON.stringify(users));
-      setMyHabits(existingUser.habits);
+
+      setMyHabits([...existingUser.habits]);
       setEditedHabit(null);
-      setAddHabit((prev) => !prev);
+      setAddHabit(false);
     }
   }
+
   useEffect(() => {
     if (editedHabit) {
       setHabit(editedHabit);
     }
-  }, [editedHabit,]);
+  }, [editedHabit]);
 
   function handleClose() {
     setAddHabit(false);
     setEditedHabit(null);
   }
+
   return (
-    <>
-      <div className="fixed inset-0 z-50 min-h-screen flex justify-center items-center">
-        <div className="w-118 p-4 rounded-lg shadow shadow-[#dd4b25] bg-[#fdfaf2] z-50 flex flex-col gap-8 relative">
-          <X
-            onClick={handleClose}
-            className="absolute right-4 text-[#a97c5e]"
-          />
-          <div className="flex">
-            <div>
-              <h1 className="text-3xl font-bold">Add New Habit</h1>
-              <p className="text-sm mt-2 text-[#a8856d] font-semibold">
-                Start a new habit and <br />
-                build a better you.
-              </p>
-            </div>
-            <div>
-              <img src={girlImage} alt="" className="w-48" />
-            </div>
+    <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex justify-center items-center p-3 sm:p-6">
+      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6 rounded-xl shadow-2xl bg-[#fdfaf2] dark:bg-gray-900 dark:text-white relative">
+        <button
+          onClick={handleClose}
+          className="absolute right-4 top-4 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800"
+        >
+          <X className="text-[#a97c5e]" />
+        </button>
+
+        <div className="flex items-center justify-between gap-3 pr-8">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              {editedHabit === null ? "Add New Habit" : "Edit Habit"}
+            </h1>
+
+            <p className="text-sm mt-2 text-[#a8856d] font-semibold">
+              Start a new habit and
+              <br />
+              build a better you.
+            </p>
           </div>
-          <div className="flex flex-col gap-2 relative">
-            <div className="relative  h-18">
-              <label htmlFor="habit" className="font-semibold">
-                Habit Name
-              </label>
-              <Pen className="absolute left-2 top-7 w-5 text-[#a97c5e]" />
+
+          <img src={girlImage} alt="" className="w-28 sm:w-40 shrink-0" />
+        </div>
+
+        <div className="flex flex-col gap-5 mt-5">
+          <div>
+            <label htmlFor="habit-name" className="font-semibold block mb-2">
+              Habit Name
+            </label>
+
+            <div className="relative">
+              <Pen className="absolute left-2 top-1/2 -translate-y-1/2 w-5 text-[#a97c5e] z-10" />
+
               <input
                 type="text"
                 name="name"
-                id=""
+                id="habit-name"
                 value={habit.name}
                 onChange={handleHabitChange}
-                className="border border-[#a97c5e] rounded-md w-98 h-8 pl-8 focus:outline-none"
+                className="border border-[#a97c5e] rounded-md w-full h-10 pl-8 pr-3 focus:outline-none focus:border-[#c64d26] bg-transparent dark:bg-gray-800"
                 placeholder="eg. Drink water"
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
-              )}
             </div>
+
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+            )}
           </div>
-          <div className=" relative h-24">
+
+          <div>
             <p className="font-semibold mb-4">Choose a color</p>
-            <div className="flex gap-6">
+
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-4">
               {habitColors.map((color) => (
                 <button
+                  type="button"
+                  key={color}
                   onClick={() => {
                     setHabit((prev) => ({
                       ...prev,
                       color,
                     }));
+
                     setErrors((prev) => {
-                      const nextErrors = { ...prev };
+                      const nextErrors = {
+                        ...prev,
+                      };
+
                       delete nextErrors.color;
+
                       return nextErrors;
                     });
                   }}
-                  key={color}
                   style={{
                     backgroundColor: color,
                     outlineStyle: "solid",
                     outlineColor: color,
-                    outlineWidth: "1px",
+                    outlineWidth: "2px",
                     outlineOffset: "1px",
                   }}
                   className={clsx(
-                    "w-8 h-8 rounded-full shadow-lg border-4 ",
-                    habit.color === color ? "border-black" : "border-gray-200",
+                    "w-9 h-9 rounded-full shadow-lg border-4",
+                    habit.color === color
+                      ? "border-black dark:border-black"
+                      : "border-gray-200",
                   )}
-                ></button>
+                />
               ))}
             </div>
+
             {errors.color && (
-              <p className="absolute text-red-500 text-sm mt-2">
-                {errors.color}
-              </p>
+              <p className="text-red-500 text-sm mt-2">{errors.color}</p>
             )}
           </div>
-          <div className="bg-[#fdf1e5] rounded-lg p-2">
-            <p className="text-[#cb5b42]">Tip</p>
-            <p className="text-[#a97c5e] text-sm">
+
+          <div className="bg-[#fdf1e5] dark:bg-[#3b2920] rounded-lg p-3">
+            <p className="text-[#cb5b42] font-semibold">Tip</p>
+
+            <p className="text-[#a97c5e] dark:text-gray-300 text-sm mt-1">
               Small habits today, big changes tomorrow.
             </p>
           </div>
-          <div className="flex flex-col gap-4 justify-center items-center">
+
+          <div className="flex flex-col gap-3">
             <button
               onClick={addHabit}
-              className="bg-[#d65b43] rounded-md w-98 text-white py-2"
+              className="bg-[#d65b43] hover:bg-[#b74732] rounded-md w-full text-white py-2.5 font-semibold transition"
             >
               {editedHabit === null ? "Add Habit" : "Edit Habit"}
             </button>
+
             <button
               onClick={handleClose}
-              className="bg-[#fdf8f4] rounded-md w-98 text-[#a1785d] border border-[#a1785d] py-2"
+              className="bg-[#fdf8f4] dark:bg-gray-800 rounded-md w-full text-[#a1785d] border border-[#a1785d] py-2.5 font-semibold"
             >
               Cancel
             </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

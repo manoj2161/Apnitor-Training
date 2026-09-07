@@ -2,6 +2,7 @@ import girlImage from "../assets/girlImage.png";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
+
 export const Login = ({ isLoggedIn, setIsLoggedIn }) => {
   const [formData, setFormData] = useState({
     email: "",
@@ -9,200 +10,213 @@ export const Login = ({ isLoggedIn, setIsLoggedIn }) => {
     rememberMe: false,
     isLoggedIn,
   });
+
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
+
   const navigate = useNavigate();
+
   function handleChange(e) {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
     setErrors((prev) => ({
       ...prev,
       [name]: "",
     }));
   }
+
   function handleSignin(e) {
     e.preventDefault();
+
     const newErrors = {};
     const data = JSON.parse(localStorage.getItem("users")) || [];
+
     const existingUser = data.find(
-      (user) => user.email === formData.email.toLowerCase(),
+      (user) => user.email === formData.email.trim().toLowerCase(),
     );
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!existingUser) {
-      newErrors.email = "User does not exists";
+      newErrors.email = "User does not exist";
     }
+
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
     } else if (existingUser && existingUser.password !== formData.password) {
       newErrors.password = "Password is incorrect";
     }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
+
     if (formData.rememberMe) {
       localStorage.setItem("currentUser", JSON.stringify(existingUser.id));
+      sessionStorage.removeItem("currentUser");
     } else {
       sessionStorage.setItem("currentUser", JSON.stringify(existingUser.id));
+      localStorage.removeItem("currentUser");
     }
+
     setIsLoggedIn(true);
     navigate("/dashboard");
   }
 
   return (
-    <>
-      <div className="w-atuo h-screen bg-[#fef9f3] lg:flex md:flex md:justify-center md:items-center py-16">
-        <div className="lg:w-1/2 w-full flex flex-col justify-center items-center">
-          <div>
-            <img
-              src={girlImage}
-              alt="girlImage"
-              className="lg:w-208 md:w-188 sm:w-128 "
-            />
-          </div>
-          <div>
-            <h1 className="lg:text-[2.5rem] md:text-[1.5rem] text-center font-bold">
-              Say hi to your <br></br> self-love journal
-            </h1>
-            <p className="text-center font-semibold lg:text-lg text-xs mt-2">
-              Hope you have a good day
-            </p>
-          </div>
-        </div>
-        <div className="lg:w-1/2 w-full px-8 lg:px-38">
-          <div className="hidden md:block lg:block ml-8">
-            <h2 className="text-2xl font-bold">Welcome back</h2>
-            <p className="text-[#c64d26] mt-2">Glad to see you again</p>
-          </div>
-          <div className="">
-            <form
-              action=""
-              onSubmit={handleSignin}
-              className="flex flex-col p-8 gap-4 relative"
-            >
-              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
-                <label
-                  htmlFor="email"
-                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
-                >
-                  Email
-                </label>
+    <div className="min-h-screen bg-[#fef9f3] dark:bg-gray-950 text-gray-900 dark:text-white flex flex-col lg:flex-row items-center justify-center px-4 py-8 sm:px-8 lg:px-12 transition-colors">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center text-center">
+        <img
+          src={girlImage}
+          alt="Self love"
+          className="w-56 sm:w-72 md:w-96 lg:w-[34rem] xl:w-[40rem] max-w-full"
+        />
 
-                <span className="absolute left-13 -top-1 text-red-500 hidden lg:block md:block">
-                  *
-                </span>
+        <div className="mt-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold leading-tight">
+            Say hi to your
+            <br />
+            self-love journal
+          </h1>
 
-                <Mail className="absolute md:top-8 lg:top-8 top-8 left-2 text-[#FDC8A0]" />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  id=""
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none w-full bg-transparent h-10 pl-10 absolute top-6"
-                />
-                <span className="text-sm text-red-500 absolute top-16 left-1">
-                  {errors && <p>{errors.email}</p>}
-                </span>
-              </div>
-              <div className="relative lg:h-16 md:h-16 h-12 py-2 mb-2">
-                <label
-                  htmlFor="password"
-                  className="hidden md:block lg:block text-xl -mb-4 font-semibold absolute -top-1"
-                >
-                  Password
-                </label>
-                <span className="absolute left-22 -top-1 text-red-500 h-2 hidden lg:block md:block">
-                  *
-                </span>
-                <Lock className="absolute lg:top-8 md:top-8 top-8 left-2 text-[#FDC8A0]" />
-                {show ? (
-                  <EyeClosed
-                    onClick={() => setShow(false)}
-                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
-                  />
-                ) : (
-                  <Eye
-                    onClick={() => setShow(true)}
-                    className="absolute lg:top-8 md:top-8 right-2 top-8 text-[#FDC8A0] z-10"
-                  />
-                )}
-                {show ? (
-                  <div>
-                    <input
-                      type="text"
-                      name="password"
-                      placeholder="Create your password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
-                    />
-                    <span className="text-sm text-red-500 absolute top-16 left-1">
-                      {errors && <p>{errors.password}</p>}
-                    </span>
-                  </div>
-                ) : (
-                  <div>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Create your password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      className="rounded-sm focus:bg-transparent border-2 border-[#FDC8A0] focus:outline-none bg-transparent h-10 pl-10 absolute top-6 w-full"
-                    />
-                    <span className="text-sm text-red-500 absolute top-16 left-1">
-                      {errors && <p>{errors.password}</p>}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex justify-between md:justify-between mt-4">
-                <div>
-                  <input
-                    type="checkbox"
-                    name="rememberMe"
-                    value={formData.rememberMe}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        rememberMe: e.target.checked,
-                      }))
-                    }
-                    className="mr-2 accent-orange-300"
-                  />
-                  <span className="font-semibold">Remember me</span>
-                </div>
-                <div className="text-[#c64d26] font-semibold">
-                  Forget password?
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="bg-[#c64d26] rounded-md h-10 text-white text-lg"
-              >
-                Sign In
-              </button>
-            </form>
-          </div>
-          <div className="text-center flex justify-center gap-2">
-            <span>Dont have an account?</span>
-            <button
-              type="button"
-              onClick={() => navigate("/signup")}
-              className="text-green-800 font-semibold"
-            >
-              Sign Up
-            </button>
-          </div>
+          <p className="font-semibold text-xs sm:text-sm md:text-base lg:text-lg mt-2 text-gray-700 dark:text-gray-300">
+            Hope you have a good day
+          </p>
         </div>
       </div>
-    </>
+
+      <div className="w-full max-w-xl lg:w-1/2 lg:max-w-none mt-8 lg:mt-0 lg:px-10 xl:px-20">
+        <div className="text-center lg:text-left px-2 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl font-bold">Welcome back</h2>
+
+          <p className="text-[#c64d26] mt-2">Glad to see you again</p>
+        </div>
+
+        <form
+          onSubmit={handleSignin}
+          className="flex flex-col gap-5 px-2 sm:px-6 mt-5"
+        >
+          <div>
+            <label
+              htmlFor="login-email"
+              className="block text-sm sm:text-base font-semibold mb-2"
+            >
+              Email
+              <span className="text-red-500 ml-1">*</span>
+            </label>
+
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#FDC8A0] z-10 size-5" />
+
+              <input
+                type="email"
+                name="email"
+                id="login-email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                className="rounded-md border-2 border-[#FDC8A0] focus:outline-none focus:border-[#c64d26] bg-transparent dark:bg-gray-900 w-full h-11 pl-10 pr-3"
+              />
+            </div>
+
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="login-password"
+              className="block text-sm sm:text-base font-semibold mb-2"
+            >
+              Password
+              <span className="text-red-500 ml-1">*</span>
+            </label>
+
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#FDC8A0] z-10 size-5" />
+
+              {show ? (
+                <EyeClosed
+                  onClick={() => setShow(false)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FDC8A0] z-10 cursor-pointer size-5"
+                />
+              ) : (
+                <Eye
+                  onClick={() => setShow(true)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#FDC8A0] z-10 cursor-pointer size-5"
+                />
+              )}
+
+              <input
+                type={show ? "text" : "password"}
+                name="password"
+                id="login-password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                className="rounded-md border-2 border-[#FDC8A0] focus:outline-none focus:border-[#c64d26] bg-transparent dark:bg-gray-900 w-full h-11 pl-10 pr-10"
+              />
+            </div>
+
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+            )}
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mt-1 text-sm sm:text-base">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                checked={formData.rememberMe}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    rememberMe: e.target.checked,
+                  }))
+                }
+                className="accent-orange-300"
+              />
+
+              <span className="font-semibold">Remember me</span>
+            </label>
+
+            <button
+              type="button"
+              onClick={() => navigate("/forgot-password")}
+              className="text-[#c64d26] font-semibold text-left sm:text-right"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            className="bg-[#c64d26] hover:bg-[#ad401e] rounded-md h-11 text-white text-base sm:text-lg font-semibold transition"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div className="text-center flex justify-center gap-2 mt-5 text-sm sm:text-base">
+          <span>Don't have an account?</span>
+
+          <button
+            type="button"
+            onClick={() => navigate("/signup")}
+            className="text-green-800 dark:text-green-400 font-semibold"
+          >
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
