@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 export const Login = () => {
   const [pass, setpass] = useState(false);
-
+  const [loader, setLoader] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,31 +23,79 @@ export const Login = () => {
       [name]: "",
     }));
   }
-  function handleSignup(e) {
+  function handleLogin(e) {
     e.preventDefault();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const newErrors = {};
-
     const usersData = JSON.parse(localStorage.getItem("recipeBoxUsers")) || [];
     const existingUser = usersData.find(
       (user) => user.email === formData.email,
     );
-    if (!formData.email.trim()) {
+    if (!existingUser) {
+      newErrors.email = "User does not exits";
+    } else if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    } else if (!existingUser) {
-      newErrors.email = "User does not exists";
     }
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
+    } else if (
+      existingUser &&
+      formData.password.trim() !== existingUser.password
+    ) {
+      newErrors.password = "Incorrect Password";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    // localStorage.setItem("recipeBoxUsers", JSON.stringify(usersData));
-    navigate("/login");
+    console.log(existingUser);
+    localStorage.setItem(
+      "recipeBoxCurrentUser",
+      JSON.stringify(existingUser.id),
+    );
+    savePendingRecipe();
+    setLoader(true);
+    setTimeout(() => {
+      setLoader(false);
+      navigate("/search");
+    }, 1000);
+  }
+
+  function savePendingRecipe() {
+    const pendingRecipe = sessionStorage.getItem("pendingRecipe");
+
+    if (!pendingRecipe) {
+      return;
+    }
+
+    const recipe = JSON.parse(pendingRecipe);
+
+    const currentUser = JSON.parse(
+      localStorage.getItem("recipeBoxCurrentUser"),
+    );
+
+    const usersData = JSON.parse(localStorage.getItem("recipeBoxUsers")) || [];
+
+    const loggedUser = usersData.find((user) => user.id === currentUser);
+
+    if (!loggedUser) {
+      return;
+    }
+
+    loggedUser.recipies = loggedUser.recipies || [];
+
+    const existingRecipe = loggedUser.recipies.find(
+      (item) => item.idMeal === recipe.idMeal,
+    );
+
+    if (!existingRecipe) {
+      loggedUser.recipies.push(recipe);
+    }
+
+    localStorage.setItem("recipeBoxUsers", JSON.stringify(usersData));
+
+    sessionStorage.removeItem("pendingRecipe");
+
+    console.log("Pending recipe saved:", recipe);
   }
   return (
     <>
@@ -58,8 +106,12 @@ export const Login = () => {
               <ChefHat className="size-38" />
               <p className="text-3xl">RecipeBox</p>
               <p className="text-center text-xl">
-                Create your account <br />
-                and start your recipe journey
+                <span>Welcome Back ! </span>
+                <br />
+                <span>
+                  Good food is always <br />
+                  Good Idea.
+                </span>
               </p>
             </div>
             <div>
@@ -74,7 +126,7 @@ export const Login = () => {
           <form
             action="
             "
-            onSubmit={handleSignup}
+            onSubmit={handleLogin}
             className="flex flex-col p-28 lg:px-88 "
           >
             <div className=" h-22 relative flex flex-col">
@@ -126,20 +178,29 @@ export const Login = () => {
               )}
             </div>
             <div className="relative h-6">
-              <button className="absolute right-2 font-semibold">
+              <button
+                onClick={() => navigate("/forgot")}
+                className="absolute right-2 font-semibold"
+              >
                 Forgot Password ?
               </button>
             </div>
-            <button
-              type="submit"
-              className="bg-green-950 rounded-lg my-4 py-2 text-white font-semibold text-lg"
-            >
-              Login
-            </button>
+            <div className=" h-22 relative flex flex-col">
+              {!loader ? (
+                <button
+                  type="submit"
+                  className="bg-green-950 rounded-lg my-4 py-2 text-white font-semibold text-lg"
+                >
+                  Login
+                </button>
+              ) : (
+                <div className="border border-green-900 absolute size-6 rounded-full border-4 animate-spin border-t-gray-200 top-6 left-[50%]"></div>
+              )}
+            </div>
             <p className="text-center">
               Don't have an account?
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/signup")}
                 className="text-green-950 font-bold ml-1"
               >
                 Sign Up

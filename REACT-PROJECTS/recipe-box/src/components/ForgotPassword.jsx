@@ -1,18 +1,18 @@
-import { ChefHat, User, Mail, Lock, Eye, EyeClosed } from "lucide-react";
+import { ChefHat, Mail, Lock, Eye, EyeClosed } from "lucide-react";
 import dish from "../assets/dish.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-export const Signup = () => {
+export const ForgotPassword = () => {
   const [pass, setpass] = useState(false);
   const [cpass, setcpass] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [loader, setLoader] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
     cpassword: "",
   });
   const [errors, setErrors] = useState({});
-  const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -26,25 +26,17 @@ export const Signup = () => {
       [name]: "",
     }));
   }
-  function handleSignup(e) {
+  function handleLogin(e) {
     e.preventDefault();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const newErrors = {};
-
     const usersData = JSON.parse(localStorage.getItem("recipeBoxUsers")) || [];
     const existingUser = usersData.find(
       (user) => user.email === formData.email,
     );
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    } else if (existingUser) {
-      newErrors.email = "User already exists";
+    } else if (!existingUser) {
+      newErrors.email = "User does not exists";
     }
     if (!formData.password.trim()) {
       newErrors.password = "Password is required";
@@ -60,21 +52,27 @@ export const Signup = () => {
       setErrors(newErrors);
       return;
     }
-    const newUser = {
-      id: crypto.randomUUID(),
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      password: formData.password.trim(),
-      cpassword: formData.cpassword.trim(),
-      recipies: [],
-    };
-    usersData.push(newUser);
-    localStorage.setItem("recipeBoxUsers", JSON.stringify(usersData));
+    const updatedUsers = usersData.map((user) =>
+      user.email === formData.email.trim().toLowerCase()
+        ? {
+            ...user,
+            password: formData.password,
+            cpassword: formData.cpassword,
+          }
+        : user,
+    );
+    setTimeout(() => {
+      setSuccess(true);
+    }, 1000);
+    setTimeout(() => {
+      setSuccess((prev) => !prev);
+    }, 2000);
     setLoader(true);
     setTimeout(() => {
       setLoader(false);
-      navigate("/login");
     }, 1000);
+    localStorage.setItem("recipeBoxUsers", JSON.stringify(updatedUsers));
+    // navigate("/dashboard");
   }
   return (
     <>
@@ -85,8 +83,12 @@ export const Signup = () => {
               <ChefHat className="size-38" />
               <p className="text-3xl">RecipeBox</p>
               <p className="text-center text-xl">
-                Create your account <br />
-                and start your recipe journey
+                <span>Forgot Password ! </span>
+                <br />
+                <span>
+                  No worries <br />
+                  Change your old password.
+                </span>
               </p>
             </div>
             <div>
@@ -94,34 +96,21 @@ export const Signup = () => {
             </div>
           </div>
         </div>
-        <div className="h-screen w-[60%]">
+        <div className="h-screen w-[60%] relative">
+          {success && (
+            <div className="animate-slide  w-60 rounded-lg bg-gray-800 absolute right-2 top-2 text-white  py-2 px-1 border text-sm text-center">
+              <p>Password Changed Successfully</p>
+            </div>
+          )}
           <h1 className="text-center text-[48px] text-green-950 font-bold mt-16 ">
-            Sign Up
+            Set New Password
           </h1>
           <form
             action="
             "
-            onSubmit={handleSignup}
+            onSubmit={handleLogin}
             className="flex flex-col p-28 lg:px-88 "
           >
-            <div className=" h-22 relative flex flex-col">
-              <User className="absolute top-8 left-1 text-green-950" />
-              <label htmlFor="name" className="text-lg font-semibold">
-                Full Name
-              </label>
-              <span className="text-red-500 absolute left-21">*</span>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                className="border rounded h-8 border-green-950 pl-8"
-                placeholder="Full Name"
-                onChange={handleChange}
-              />
-              {errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
-              )}
-            </div>
             <div className=" h-22 relative flex flex-col">
               <Mail className="absolute top-8 left-1 text-green-950" />
               <label htmlFor="email" className="text-lg font-semibold">
@@ -143,7 +132,7 @@ export const Signup = () => {
             <div className=" h-22 relative flex flex-col">
               <Lock className="absolute top-8 left-1 text-green-950" />
               <label htmlFor="password" className="text-lg font-semibold">
-                Password
+                New Password
               </label>
               <input
                 type={pass ? "text" : "password"}
@@ -151,7 +140,7 @@ export const Signup = () => {
                 name="password"
                 className=" rounded h-8 border border-green-950 pl-8"
                 onChange={handleChange}
-                placeholder="Password"
+                placeholder="Enter New Password"
               />
               {pass ? (
                 <EyeClosed
@@ -165,7 +154,7 @@ export const Signup = () => {
                 />
               )}
 
-              <span className="text-red-500 absolute left-19">*</span>
+              <span className="text-red-500 absolute left-30">*</span>
               {errors.password && (
                 <p className="text-red-500 text-sm">{errors.password}</p>
               )}
@@ -173,15 +162,15 @@ export const Signup = () => {
             <div className=" h-22 relative flex flex-col">
               <Lock className="absolute top-8 left-1 text-green-950" />
               <label htmlFor="cpassword" className="text-lg font-semibold">
-                Confirm Password
+                Confirm New Password
               </label>
               <input
                 type={cpass ? "text" : "password"}
-                onChange={handleChange}
                 value={formData.cpassword}
                 name="cpassword"
-                className=" rounded h-8 border-green-950 border pl-8"
-                placeholder="Confirm Password"
+                className=" rounded h-8 border border-green-950 pl-8"
+                onChange={handleChange}
+                placeholder="Confirm New Password"
               />
               {cpass ? (
                 <EyeClosed
@@ -195,7 +184,7 @@ export const Signup = () => {
                 />
               )}
 
-              <span className="text-red-500 absolute left-37">*</span>
+              <span className="text-red-500 absolute left-48">*</span>
               {errors.cpassword && (
                 <p className="text-red-500 text-sm">{errors.cpassword}</p>
               )}
@@ -204,16 +193,16 @@ export const Signup = () => {
               {!loader ? (
                 <button
                   type="submit"
-                  className="bg-green-950 rounded-lg my-4 py-2 text-white font-semibold text-lg"
+                  className="bg-green-950 rounded-lg my-4 py-2 text-white font-semibold text-lg text-center"
                 >
-                  Create Account
+                  Update Password
                 </button>
               ) : (
                 <div className="border border-green-900 absolute size-6 rounded-full border-4 animate-spin border-t-gray-200 top-6 left-[50%]"></div>
               )}
             </div>
             <p className="text-center">
-              Already have an account?
+              Go back to login ?
               <button
                 onClick={() => navigate("/login")}
                 className="text-green-950 font-bold ml-1"
