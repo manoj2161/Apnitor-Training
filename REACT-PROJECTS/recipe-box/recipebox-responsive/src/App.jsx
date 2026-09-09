@@ -9,7 +9,6 @@ import { SavedRecipes } from "./components/SavedRecipes";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { FullRecipe } from "./components/FullRecipe";
 import { PageNotFound } from "./components/PageNotFound";
-import { ShoppingList } from "./components/ShoppingList";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(() =>
@@ -20,12 +19,18 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+      <Route
+        path="/login"
+        element={<Login setIsLoggedIn={setIsLoggedIn} />}
+      />
       <Route path="/forgot" element={<ForgotPassword />} />
       <Route
         path="/search"
         element={
-          <SearchResult isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <SearchResult
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+          />
         }
       />
       <Route
@@ -33,17 +38,6 @@ function App() {
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
             <SavedRecipes
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
-            />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/shoppinglist"
-        element={
-          <ProtectedRoute isLoggedIn={isLoggedIn}>
-            <ShoppingList
               isLoggedIn={isLoggedIn}
               setIsLoggedIn={setIsLoggedIn}
             />
