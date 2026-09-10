@@ -1,14 +1,76 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, ShoppingBasket } from "lucide-react";
+import { ArrowLeft, Trash2, ShoppingBasket, Plus } from "lucide-react";
+import toast from "react-hot-toast";
 
 export const ShoppingList = ({ isLoggedIn }) => {
   const navigate = useNavigate();
 
   const [item, setItem] = useState("");
   const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
-  // If user is not logged in
+  // Load items from localStorage
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setItems([]);
+      setLoaded(false);
+      return;
+    }
+
+    const savedItems = JSON.parse(
+      localStorage.getItem("recipeBoxShoppingList") || "[]",
+    );
+
+    setItems(savedItems);
+    setLoaded(true);
+  }, [isLoggedIn]);
+
+  // Save items to localStorage
+  useEffect(() => {
+    if (!loaded) return;
+
+    localStorage.setItem("recipeBoxShoppingList", JSON.stringify(items));
+  }, [items, loaded]);
+
+  function handleAddItem() {
+    if (item.trim() === "") {
+      toast.error("Please enter an item");
+      return;
+    }
+
+    const newItem = {
+      id: Date.now(),
+      name: item.trim(),
+      completed: false,
+    };
+
+    setItems((prev) => [...prev, newItem]);
+    setItem("");
+
+    toast.success("Item added");
+  }
+
+  function handleCheck(id) {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              completed: !item.completed,
+            }
+          : item,
+      ),
+    );
+  }
+
+  function handleDelete(id) {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+
+    toast.success("Item removed");
+  }
+
+  // Login required
   if (!isLoggedIn) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
@@ -27,54 +89,21 @@ export const ShoppingList = ({ isLoggedIn }) => {
 
           <button
             onClick={() => navigate("/login")}
-            className="mt-6 w-full rounded-lg bg-green-900 px-6 py-3 font-semibold text-white transition hover:bg-green-800"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-green-950 px-6 py-3 font-semibold text-white transition hover:bg-green-900 active:scale-95"
           >
             Login
           </button>
 
           <button
             onClick={() => navigate(-1)}
-            className="mt-3 w-full rounded-lg border border-gray-300 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-100"
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-50 active:scale-95"
           >
+            <ArrowLeft className="size-4" />
             Go Back
           </button>
         </div>
       </main>
     );
-  }
-
-  // Add item
-  function handleAddItem() {
-    if (item.trim() === "") return;
-
-    const newItem = {
-      id: Date.now(),
-      name: item.trim(),
-      completed: false,
-    };
-
-    setItems((prev) => [...prev, newItem]);
-
-    setItem("");
-  }
-
-  // Check / uncheck item
-  function handleCheck(id) {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              completed: !item.completed,
-            }
-          : item,
-      ),
-    );
-  }
-
-  // Delete item
-  function handleDelete(id) {
-    setItems((prev) => prev.filter((item) => item.id !== id));
   }
 
   return (
@@ -83,10 +112,9 @@ export const ShoppingList = ({ isLoggedIn }) => {
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-5 flex items-center gap-2 rounded-lg px-3 py-2 text-green-900 transition hover:bg-green-100"
+          className="mb-5 flex items-center gap-2 rounded-xl px-3 py-2 text-green-900 transition hover:bg-green-100 active:scale-95"
         >
           <ArrowLeft size={20} />
-
           <span className="font-medium">Back</span>
         </button>
 
@@ -109,8 +137,8 @@ export const ShoppingList = ({ isLoggedIn }) => {
           </div>
         </div>
 
-        {/* Add Item Box */}
-        <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-5">
+        {/* Add Item */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5">
           <div className="flex flex-col gap-3 sm:flex-row">
             <input
               type="text"
@@ -122,21 +150,21 @@ export const ShoppingList = ({ isLoggedIn }) => {
                 }
               }}
               placeholder="Enter an item..."
-              className="min-w-0 flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-100 sm:text-base"
+              className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-gray-400 focus:border-green-700 focus:ring-2 focus:ring-green-100 sm:text-base"
             />
 
             <button
               onClick={handleAddItem}
-              className="rounded-lg bg-green-900 px-6 py-3 font-semibold text-white transition hover:bg-green-800"
+              className="flex items-center justify-center gap-2 rounded-xl bg-green-950 px-6 py-3 font-semibold text-white shadow-sm transition-all duration-200 hover:bg-green-900 hover:shadow-md active:scale-95"
             >
+              <Plus className="size-5" />
               Add Item
             </button>
           </div>
         </div>
 
-        {/* Shopping List */}
+        {/* Items */}
         <div className="mt-6">
-          {/* List Heading */}
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-bold text-gray-800">Your Items</h2>
 
@@ -147,7 +175,6 @@ export const ShoppingList = ({ isLoggedIn }) => {
             )}
           </div>
 
-          {/* Empty State */}
           {items.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-10 text-center">
               <ShoppingBasket className="mx-auto h-10 w-10 text-gray-300" />
@@ -165,7 +192,7 @@ export const ShoppingList = ({ isLoggedIn }) => {
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className={`flex items-center gap-3 rounded-xl bg-white p-4 shadow-sm transition ${
+                  className={`flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition ${
                     item.completed ? "opacity-70" : "hover:shadow-md"
                   }`}
                 >
@@ -188,11 +215,12 @@ export const ShoppingList = ({ isLoggedIn }) => {
                     {item.name}
                   </span>
 
-                  {/* Delete Button */}
+                  {/* Delete */}
                   <button
                     onClick={() => handleDelete(item.id)}
-                    className="shrink-0 rounded-lg p-2 text-red-500 transition hover:bg-red-50 hover:text-red-700"
+                    className="shrink-0 rounded-xl p-2 text-red-500 transition hover:bg-red-50 hover:text-red-700 active:scale-95"
                     title="Delete item"
+                    aria-label={`Delete ${item.name}`}
                   >
                     <Trash2 size={18} />
                   </button>

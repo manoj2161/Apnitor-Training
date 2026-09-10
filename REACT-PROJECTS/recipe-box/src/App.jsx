@@ -19,15 +19,20 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+
       <Route path="/signup" element={<Signup />} />
+
       <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+
       <Route path="/forgot" element={<ForgotPassword />} />
+
       <Route
         path="/search"
         element={
           <SearchResult isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         }
       />
+
       <Route
         path="/myrecipes"
         element={
@@ -39,6 +44,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/shoppinglist"
         element={
@@ -50,7 +56,9 @@ function App() {
           </ProtectedRoute>
         }
       />
+
       <Route path="/recipe/:id" element={<FullRecipe />} />
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

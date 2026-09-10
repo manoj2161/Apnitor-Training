@@ -7,20 +7,31 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   function handleLogout() {
     localStorage.removeItem("recipeBoxCurrentUser");
+
     setIsLoggedIn(false);
+
     navigate("/");
   }
 
-  const items = [
-    { label: "Home", icon: Home, path: "/search", show: true },
-    { label: "My Recipes", icon: NotepadText, path: "/myrecipes", show: isLoggedIn },
-  ];
+  function handleHome() {
+    navigate("/search", {
+      state: {
+        clearSearch: Date.now(),
+      },
+    });
+  }
 
   return (
     <>
+      {/* ================================================= */}
+      {/* DESKTOP SIDEBAR */}
+      {/* ================================================= */}
+
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-gray-200 bg-white px-4 py-6 shadow-sm lg:flex">
+        {/* LOGO */}
+
         <button
-          onClick={() => navigate("/search")}
+          onClick={handleHome}
           className="mb-8 flex items-center justify-center"
         >
           <img
@@ -30,27 +41,48 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
           />
         </button>
 
+        {/* NAVIGATION */}
+
         <nav className="space-y-2">
-          {items
-            .filter((item) => item.show)
-            .map(({ label, icon: Icon, path }) => (
-              <button
-                key={label}
-                onClick={() => navigate(path)}
-                className="flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-green-950 transition hover:bg-green-100"
-              >
-                <Icon className="size-5" />
-                <span>{label}</span>
-              </button>
-            ))}
+          {/* HOME */}
+
+          <button
+            onClick={handleHome}
+            className="flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-green-950 transition hover:bg-green-100"
+          >
+            <Home className="size-5" />
+
+            <span>Home</span>
+          </button>
+
+          {/* MY RECIPES */}
 
           {isLoggedIn && (
-            <button className="flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-green-950 transition hover:bg-green-100">
+            <button
+              onClick={() => navigate("/myrecipes")}
+              className="flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-green-950 transition hover:bg-green-100"
+            >
+              <NotepadText className="size-5" />
+
+              <span>My Recipes</span>
+            </button>
+          )}
+
+          {/* SHOPPING */}
+
+          {isLoggedIn && (
+            <button
+              onClick={() => navigate("/shoppinglist")}
+              className="flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-green-950 transition hover:bg-green-100"
+            >
               <ShoppingBasket className="size-5" />
-              <span>Shopping List</span>
+
+              <span>Shopping</span>
             </button>
           )}
         </nav>
+
+        {/* LOGOUT */}
 
         {isLoggedIn && (
           <button
@@ -58,19 +90,29 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
             className="mt-auto flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-red-600 transition hover:bg-red-50"
           >
             <LogOut className="size-5" />
+
             <span>Logout</span>
           </button>
         )}
       </aside>
 
+      {/* ================================================= */}
+      {/* MOBILE BOTTOM NAVIGATION */}
+      {/* ================================================= */}
+
       <nav className="fixed inset-x-0 bottom-0 z-50 flex min-h-16 items-center justify-around border-t border-gray-200 bg-white/95 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_18px_rgba(0,0,0,0.08)] backdrop-blur lg:hidden">
+        {/* HOME */}
+
         <button
-          onClick={() => navigate("/search")}
+          onClick={handleHome}
           className="flex min-w-16 flex-col items-center gap-1 py-2 text-green-950"
         >
           <Home className="size-5" />
+
           <span className="text-[10px] font-semibold">Home</span>
         </button>
+
+        {/* MY RECIPES */}
 
         {isLoggedIn && (
           <button
@@ -78,9 +120,12 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
             className="flex min-w-16 flex-col items-center gap-1 py-2 text-green-950"
           >
             <NotepadText className="size-5" />
+
             <span className="text-[10px] font-semibold">My Recipes</span>
           </button>
         )}
+
+        {/* SHOPPING */}
 
         {isLoggedIn && (
           <button
@@ -88,9 +133,12 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
             className="flex min-w-16 flex-col items-center gap-1 py-2 text-green-950"
           >
             <ShoppingBasket className="size-5" />
+
             <span className="text-[10px] font-semibold">Shopping</span>
           </button>
         )}
+
+        {/* LOGOUT */}
 
         {isLoggedIn && (
           <button
@@ -98,6 +146,7 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
             className="flex min-w-16 flex-col items-center gap-1 py-2 text-red-600"
           >
             <LogOut className="size-5" />
+
             <span className="text-[10px] font-semibold">Logout</span>
           </button>
         )}
