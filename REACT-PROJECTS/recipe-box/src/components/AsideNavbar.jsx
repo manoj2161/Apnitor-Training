@@ -23,13 +23,7 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   return (
     <>
-      {/* ================================================= */}
-      {/* DESKTOP SIDEBAR */}
-      {/* ================================================= */}
-
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-gray-200 bg-white px-4 py-6 shadow-sm lg:flex">
-        {/* LOGO */}
-
         <button
           onClick={handleHome}
           className="mb-8 flex items-center justify-center"
@@ -41,11 +35,7 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
           />
         </button>
 
-        {/* NAVIGATION */}
-
         <nav className="space-y-2">
-          {/* HOME */}
-
           <button
             onClick={handleHome}
             className="flex h-11 w-full items-center gap-3 rounded-xl px-4 font-semibold text-green-950 transition hover:bg-green-100"
@@ -54,8 +44,6 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
 
             <span>Home</span>
           </button>
-
-          {/* MY RECIPES */}
 
           {isLoggedIn && (
             <button
@@ -67,8 +55,6 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
               <span>My Recipes</span>
             </button>
           )}
-
-          {/* SHOPPING */}
 
           {isLoggedIn && (
             <button
@@ -82,8 +68,6 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
           )}
         </nav>
 
-        {/* LOGOUT */}
-
         {isLoggedIn && (
           <button
             onClick={handleLogout}
@@ -96,13 +80,7 @@ export const AsideNavbar = ({ isLoggedIn, setIsLoggedIn }) => {
         )}
       </aside>
 
-      {/* ================================================= */}
-      {/* MOBILE BOTTOM NAVIGATION */}
-      {/* ================================================= */}
-
       <nav className="fixed inset-x-0 bottom-0 z-50 flex min-h-16 items-center justify-around border-t border-gray-200 bg-white/95 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_18px_rgba(0,0,0,0.08)] backdrop-blur lg:hidden">
-        {/* HOME */}
-
         <button
           onClick={handleHome}
           className="flex min-w-16 flex-col items-center gap-1 py-2 text-green-950"
