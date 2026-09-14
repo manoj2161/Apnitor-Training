@@ -275,10 +275,6 @@ export const SearchResult = ({ isLoggedIn, setIsLoggedIn }) => {
     toast.success("Recipe saved successfully!");
   }
 
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
-
   return (
     <div className="min-h-screen bg-gray-50">
       <AsideNavbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
