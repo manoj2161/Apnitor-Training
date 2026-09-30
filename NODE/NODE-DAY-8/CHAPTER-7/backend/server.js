@@ -7,6 +7,7 @@ import {
   createProduct,
   deleteProduct,
   updateProduct,
+  createUsers,
 } from "./src/Controllers/product.controller.js";
 import { mongoDb } from "./src/Utils/db.js";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -17,7 +18,7 @@ const port = process.env.PORT;
 mongoDb();
 app.get("/", getProducts);
 app.post("/", createProduct);
-
+app.post("/users", createUsers);
 app.delete("/:id", deleteProduct);
 
 app.put("/:id", updateProduct);

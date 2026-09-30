@@ -6,6 +6,20 @@ export const getProducts = async (req, res) => {
     data: products,
   });
 };
+export const createUsers = async (req, res) => {
+  const { fullName, email, password } = req.body;
+  try {
+    const user = await User.create({
+      fullName: fullName.trin(),
+      email: email,
+      password: password,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 export const createProduct = async (req, res) => {
   const { name, price } = req.body;
 

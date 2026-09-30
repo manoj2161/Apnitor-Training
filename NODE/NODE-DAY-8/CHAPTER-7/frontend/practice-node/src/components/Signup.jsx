@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 export const Signup = () => {
@@ -6,6 +7,7 @@ export const Signup = () => {
     email: "",
     password: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -13,9 +15,32 @@ export const Signup = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+
+    if (!formData.fullName.trim()) {
+      return;
+    }
+    if (!formData.email.trim()) {
+      return;
+    }
+    if (!formData.password.trim()) {
+      return;
+    }
+    const user = {
+      fullName: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    try {
+      if (user) {
+        await axios.post("http://localhost:3000/users", user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
