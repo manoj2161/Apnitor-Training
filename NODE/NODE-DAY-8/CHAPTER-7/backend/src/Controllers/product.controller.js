@@ -1,4 +1,5 @@
 import { Product } from "../Models/productSchema.js";
+import { User } from "../Models/userSchema.js";
 export const getProducts = async (req, res) => {
   const products = await Product.find();
   res.json({
@@ -10,7 +11,7 @@ export const createUsers = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
     const user = await User.create({
-      fullName: fullName.trin(),
+      fullName: fullName.trim(),
       email: email,
       password: password,
     });

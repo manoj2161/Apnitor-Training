@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
-
 export const Signup = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
