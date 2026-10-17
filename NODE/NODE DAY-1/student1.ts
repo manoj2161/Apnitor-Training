@@ -4,4 +4,3 @@ const course: string = process.argv[4];
 console.log(`Name : ${name}`);
 console.log(`Age : ${age}`);
 console.log(`Course : ${course}`);
-console.log(process.argv);
