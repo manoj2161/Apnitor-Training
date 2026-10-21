@@ -1,13 +1,5 @@
 import express from "express";
 const app = express();
-
-let users = [
-  {
-    id: 1,
-    name: "Manoj",
-    age: 23,
-  },
-];
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Home Page");
